@@ -12,10 +12,10 @@ export interface AddItemAction{
     payload: Item;
 }
 
-let nextId = 0;
-export const addItem = () => ({
+
+export const addItem = (item:Item) => ({
   type: 'ADD_ITEM',
-  item:{id: `item-`+ nextId++, name:'', cost: 0}
+  item
 })
 
 const DELETE_ITEM = "DELETE_ITEM";
@@ -41,8 +41,10 @@ export interface TotalExpensesAction{
 
 //calculate total
 export const getTotal = (items: Item[]) => {
-    const sum = (total: number, item: number) => total + item;
-        
+    const total= items.reduce( (total, item) => {
+        return total + item.cost;
+        }, 0);
+        return total;
     };
 
 export const SetIncomeRatio = () => {

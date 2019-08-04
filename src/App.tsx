@@ -1,28 +1,21 @@
 import React, {Component} from 'react';
 import './App.css';
-import { ReduxState} from './types/types';
+import { ReduxState, Item} from './types/types';
 import './index.css';
 import { connect } from "react-redux";
-import {getTotal} from './store/actions/actions';
-
-// const items = [ 
-//   {id: "0", name: "rent", cost: 2000},
-//   {id: "1", name: "groceries", cost:200},
-//   {id: "2", name: "dining out", cost: 350},
-//   {id: "3", name: "internet", cost: 50}
-// ];
+import {getTotal, addItem} from './store/actions/actions';
 
 type State = {
   items: ReadonlyArray<{ id: string, name: string, cost: number}>,
   income1: number,
   income2: number,
   total: number,
-}
+};
 
 type Props = {
-  getTotal: () => {},
-  addItem: () => void
-}
+  getTotal: (items: Array<Item>) => void,
+  addItem: (item: Item) => void
+};
 
 class App extends Component<Props, State>{
 
@@ -34,11 +27,19 @@ class App extends Component<Props, State>{
   }
 
   onItemClick = () => {
-    this.props.addItem()
+    return (
+    <div>
+      <li>
+        <label>Cost</label><input name="expense" type="number" placeholder="Amount"></input>
+        <label>Item</label><input name="name" type="text" placeholder="Name of expense"></input>
+      </li>
+    </div>
+    )
   }
 
   getTotal = () => {
-    this.props.getTotal();
+    // const {items} = this.state;
+    // this.props.getTotal();
   }
 
   handleChange = (event: any): void => {
@@ -63,15 +64,9 @@ class App extends Component<Props, State>{
           <input onChange={this.handleChange} name="income1" value={income1}></input>
           <label>Their Income</label>
           <input onChange={this.handleChange} name="income2" value={income2}></input>
-        
-            <div>
-              <li>
-                <label>Cost</label><input name="expense" type="number" placeholder="Amount"></input>
-                <label>Item</label><input name="name" type="text" placeholder="Name of expense"></input>
-              </li>
-            </div>
+          
             <button value="calculate" onClick={this.getTotal}>Calculate</button>
-            <button value="calculate" onClick={this.onItemClick}>&plus;</button>
+            <button value="calculate" onClick={this.onItemClick}> + </button>
           </div>
       
       </div>
@@ -89,7 +84,8 @@ class App extends Component<Props, State>{
 export default connect(
   mapStateToProps,
   {
-  getTotal
+  getTotal,
+  addItem
   },
 )(App);
 

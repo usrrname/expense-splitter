@@ -18,12 +18,9 @@ const showPayReducer = (
         case 'TOTAL':
         let items = state.items;
         let total = initialState.total;
-        let accumulate = items.reduce( (total, item) => {
-        return state.total + item.cost;
-        }, 0);
-        state.total = accumulate;
         return {
-            ...state
+            ...state,
+            total
         };
       default:
         return state;
