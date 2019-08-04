@@ -1,24 +1,33 @@
 import { CalcState } from '../../types/types'
-import { CalcActionTypes} from '../actions/actions';
+import { Action} from '../actions/actions';
 
 const initialState: CalcState = {
     income1: 0,
     income2: 0,
     items: []
   }
-const state = initialState;
 
-export default function calculateReducer (state: CalcState, action: CalcActionTypes){
+//actions
+const ADD_ITEM : Action = {
+    type: 'ADD_ITEM',
+}
+//reducer
+export default function calculateReducer (state: CalcState = initialState, action: Action){
     switch (action.type){
-    case 'ADD_ITEM':
-    const {items} = state;
+    case`${ADD_ITEM}_SUCCESS`:
+        let {items} = state
         items.concat({
         id: action.payload.id,
         name: action.payload.name,
         cost: 0
         })
         return {
-        ...state
+        ...state,
+        item: {   
+                id: action.payload.id,
+                name: action.payload.name,
+                cost: 0
+            }
         }
     case 'DELETE_ITEM':
         items.filter(item => item.id !== action.payload.id);
@@ -28,3 +37,9 @@ export default function calculateReducer (state: CalcState, action: CalcActionTy
     }
 }
 
+// Action Creators
+let nextId = 0;
+export const addItem = () => ({
+  type: 'ADD_ITEM',
+  item:{id: (nextId++).toString(), name:'', cost: 0}
+})

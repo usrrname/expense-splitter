@@ -3,18 +3,21 @@ import './App.css';
 import { ReduxState, Item} from './types/types';
 import './index.css';
 import { connect } from "react-redux";
-import {getTotal, addItem} from './store/actions/actions';
+import {addItem} from './store/reducers/calculateReducer';
+import {getTotal} from './store/reducers/showPayReducer';
+import ExpenseItem from './ExpenseItem';
 
 type State = {
-  items: ReadonlyArray<{ id: string, name: string, cost: number}>,
+  items: Array<{ id: string, name: string, cost: number}>,
   income1: number,
   income2: number,
   total: number,
 };
 
 type Props = {
-  getTotal: (items: Array<Item>) => void,
-  addItem: (item: Item) => void
+  getTotal: (items: Item[]) => number,
+  addItem: () => void,
+  item: Item,
 };
 
 class App extends Component<Props, State>{
@@ -27,27 +30,22 @@ class App extends Component<Props, State>{
   }
 
   onItemClick = () => {
+    this.props.addItem();
     return (
-    <div>
-      <li>
-        <label>Cost</label><input name="expense" type="number" placeholder="Amount"></input>
-        <label>Item</label><input name="name" type="text" placeholder="Name of expense"></input>
-      </li>
-    </div>
+      <ExpenseItem id={this.props.item.id} name={this.props.item.name} cost={this.props.item.cost}/>
     )
   }
 
-  getTotal = () => {
-    // const {items} = this.state;
-    // this.props.getTotal();
+  onGetTotal = () => {
+    this.props.getTotal(this.state.items);
   }
 
   handleChange = (event: any): void => {
     // TO-DO refactor to make this shorter
-      if (event.target.name == 'income1' ) {
+      if (event.target.name === 'income1' ) {
           this.setState({ income1 : event.target.value })
       }
-      else if (event.target.name == 'income2' ){
+      else if (event.target.name === 'income2' ){
         this.setState({ income2 : event.target.value })
       }
   }
@@ -65,7 +63,11 @@ class App extends Component<Props, State>{
           <label>Their Income</label>
           <input onChange={this.handleChange} name="income2" value={income2}></input>
           
-            <button value="calculate" onClick={this.getTotal}>Calculate</button>
+          {items.map( item =>
+          <ExpenseItem id={item.id} name={item.name} cost={item.cost}/>
+            )}
+            
+            <button value="calculate" onClick={this.onGetTotal}>Calculate</button>
             <button value="calculate" onClick={this.onItemClick}> + </button>
           </div>
       
@@ -76,16 +78,16 @@ class App extends Component<Props, State>{
 
   const mapStateToProps = (state: ReduxState) => {
     return {
-      items: state.calc.items,
-      total: state.show.total
+      calc: state.calc,
+      show: state.show
     }
   }
   
 export default connect(
   mapStateToProps,
   {
-  getTotal,
-  addItem
+    total: getTotal,
+    items: addItem
   },
 )(App);
 

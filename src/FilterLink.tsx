@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import store from './store/store';
 import Link from './Link';
+import {Item} from './types/types';
 
 type Props = {
-    filter: any ,
-    showState: Readonly<{}>,
+    filter: any,
+    showState: Readonly<{total: number, income1: number, income2: number}>,
     children?: React.ReactNode;
+    items: Item[];
 };
 class FilterLink extends Component<Props> {
 

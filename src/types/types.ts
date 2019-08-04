@@ -2,13 +2,13 @@
 export interface Item {
      id: string, 
      name: string, 
-     cost: number
+     cost: number,
 }
 
 export interface CalcState {
     income1: 0,
     income2: 0,
-    items: ReadonlyArray<{ id: string, name: string, cost: number}>
+    items: Item[],
 }
 export type AppState = {
 }

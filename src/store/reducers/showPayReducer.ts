@@ -1,30 +1,36 @@
-import { userActionTypes, ShowPayFilters} from '../actions/actions';
-import { showState, CalcState } from '../../types/types';
+import {Action } from '../actions/actions';
+import { showState, Item} from '../../types/types';
 
-const initialState: showState = {
+const initialState = {
+    total: 0,
     person1: [],
     person2: [],
-    total: 0,
-    items: []
-};
+    items: [],
+}
+const GET_TOTAL: Action = {
+    type: 'TOTAL'
+}
 
 const showPayReducer = (
-    state = initialState,
-    action: userActionTypes
+    state: showState = initialState,
+    action: Action
   ): showState => {
-    switch (action) {
-      case ShowPayFilters.SHOW_ALL:
-        return state;
-        case 'TOTAL':
-        let items = state.items;
-        let total = initialState.total;
+    switch (action.type) {
+      case `${GET_TOTAL}_SUCCESS`:
         return {
             ...state,
-            total
-        };
+        }
       default:
         return state;
     }
   };
   
-  export default showPayReducer
+  export default showPayReducer;
+
+  //calculate total
+export const getTotal = (items: Item[]) => {
+    const total= items.reduce( (total, item) => {
+        return total + item.cost;
+        }, 0);
+        return total;
+    };
