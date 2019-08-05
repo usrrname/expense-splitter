@@ -1,5 +1,7 @@
-import { CalcState } from '../../types/types'
-import { Action} from '../actions/actions';
+import { CalcState, Item, showState } from '../../types/types'
+import App from '../../App';
+import { Action } from '../actions/actions';
+import { bindActionCreators } from 'redux';
 
 const initialState: CalcState = {
     income1: 0,
@@ -10,12 +12,18 @@ const initialState: CalcState = {
 //actions
 const ADD_ITEM : Action = {
     type: 'ADD_ITEM',
+    payload: []
 }
+
 //reducer
-export default function calculateReducer (state: CalcState = initialState, action: Action){
+export default function calculateReducer (state = initialState, action: Action){
+    if (typeof state === 'undefined') {
+      console.log("state is undefined");  
+      return {}
+    }
     switch (action.type){
     case`${ADD_ITEM}_SUCCESS`:
-        let {items} = state
+        const {items} = state
         items.concat({
         id: action.payload.id,
         name: action.payload.name,
@@ -24,22 +32,28 @@ export default function calculateReducer (state: CalcState = initialState, actio
         return {
         ...state,
         item: {   
-                id: action.payload.id,
-                name: action.payload.name,
+                id: action.type.id,
+                name: action.name,
                 cost: 0
             }
         }
-    case 'DELETE_ITEM':
-        items.filter(item => item.id !== action.payload.id);
-        return {...state};
+    // case 'DELETE_ITEM':
+    //     items.filter(item => item.id !== action.payload.id);
+    //     return {...state};
     default: 
     return state;   
     }
 }
 
 // Action Creators
-let nextId = 0;
-export const addItem = () => ({
-  type: 'ADD_ITEM',
-  item:{id: (nextId++).toString(), name:'', cost: 0}
-})
+export const addItem = (state: CalcState) => {
+  let items = state.items;
+  let nextId = 0
+
+  let newItem = {
+    id: (nextId++).toString(),
+    name: '',
+    cost: 0
+    }
+  return items = items.concat(newItem);
+}

@@ -8,7 +8,7 @@ const initialState = {
     items: [],
 }
 const GET_TOTAL: Action = {
-    type: 'TOTAL'
+    type: 'GET_TOTAL'
 }
 
 const showPayReducer = (

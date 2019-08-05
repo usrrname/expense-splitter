@@ -10,12 +10,8 @@ export interface CalcState {
     income2: 0,
     items: Item[],
 }
-export type AppState = {
-}
 
 export type ReduxState = {
-    router?: Object,
-    app: AppState,
     calc: CalcState,
     show: showState
   }
