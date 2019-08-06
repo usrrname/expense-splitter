@@ -1,6 +1,6 @@
 import React, {Component, Dispatch} from 'react';
 import './App.css';
-import { CalcState, showState,Item} from './types/types';
+import { CalcState, ShowState,Item} from './types/types';
 import './index.css';
 import { connect } from "react-redux";
 import {addItem} from './store/reducers/calculateReducer';
@@ -11,7 +11,7 @@ import { Action } from './store/actions/actions';
 import { Store } from 'redux';
 
 type Props = {
-  addItem: Function,
+  addItem: (state: CalcState) => Item[],
   item?: Item,
 }
 
@@ -24,17 +24,14 @@ type Props = {
 //     person2: Array<number>
 // }
 
-type State = CalcState & showState;
+type State = CalcState;
 
 class App extends Component<Props, State>{
 
   readonly state: State = {
     items: [],
-    total: 0,
     income1: 0,
     income2: 0,
-    person1: [],
-    person2: []
   }
   componentDidMount() {
     store.subscribe(() =>
@@ -45,7 +42,10 @@ componentWillUnmount(){
   !store.subscribe)
 }
   onItemClick = () => {
-    this.props.addItem(this.state);
+    store.dispatch({
+      type: 'ADD_ITEM',
+      onclick: this.props.addItem(this.state)
+    })
   }
 
   onGetTotal = () => {
@@ -63,30 +63,28 @@ componentWillUnmount(){
   }
 
   render(){
-    const { items, income1, income2, total } = this.state;
+    const { addItem } = this.props;  
+    const { items } = this.state;
     return (
-      <div className="App d-flex justify-content-start">
-        <h2>Income-based expense splitting for confused couples!</h2>
+      <div className="App d-flex justify-content-between">
+        <h2>Income-based expense splitting</h2>
         
         <div className="flex-row">
           <h4>Annual income</h4>
-          <label>Your Income</label>
-          <input onChange={this.handleChange} name="income1" value={income1}></input>
-          <label>Their Income</label>
-          <input onChange={this.handleChange} name="income2" value={income2}></input>
-          
+          <label>Your Income: </label>
+          <input onChange={this.handleChange} name="income1"></input>
+          <label>Their Income: </label>
+          <input onChange={this.handleChange} name="income2"></input>
+          <div className="flex-row">
           {items.map( item =>
             <ExpenseItem key={item.id} name={item.name} cost={item.cost}/>,
               {...items}
               )}
-
-            <span>Total: {total}</span>
             {/* <button onClick={this.onGetTotal}>Calculate</button> */}
-            <button onClick={() => store.dispatch({
-              type: 'ADD_ITEM',
-              onClick: this.props.addItem(this.state.items)
-            })} name="addItem"> + </button>
+            <button onClick={this.onItemClick} > + </button>
+            <p>Total:</p>
           </div>
+        </div>
       </div>
     )
   }
@@ -95,7 +93,6 @@ componentWillUnmount(){
   const mapStateToProps = (state: State) => {
     return {
       items: state.items,
-      total: state.total
     }
   }
   
@@ -103,7 +100,7 @@ componentWillUnmount(){
 export default connect(
   mapStateToProps,
   {
-  state: addItem
+   calcReducer: addItem
    }
 )(App);
 

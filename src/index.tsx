@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { CalcState, showState,Item} from './types/types';
+import { CalcState, Item} from './types/types';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';

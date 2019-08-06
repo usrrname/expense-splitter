@@ -1,5 +1,5 @@
 import {Action } from '../actions/actions';
-import { showState, Item} from '../../types/types';
+import { ShowState, Item} from '../../types/types';
 
 const initialState = {
     total: 0,
@@ -12,9 +12,9 @@ const GET_TOTAL: Action = {
 }
 
 const showPayReducer = (
-    state: showState = initialState,
+    state: ShowState = initialState,
     action: Action
-  ): showState => {
+  ): ShowState => {
     switch (action.type) {
       case `${GET_TOTAL}_SUCCESS`:
         return {

@@ -13,10 +13,10 @@ export interface CalcState {
 
 export type ReduxState = {
     calc: CalcState,
-    show: showState
+    show: ShowState
   }
 
-export type showState = {
+export type ShowState = {
     person1: Array<number>,
     person2: Array<number>,
     total: number,
