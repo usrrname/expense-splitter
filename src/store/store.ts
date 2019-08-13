@@ -3,14 +3,13 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { calculateReducer } from './reducers/calculateReducer';
 
+
 const middleware = [thunk];
 const store = createStore(
     calculateReducer,
     composeWithDevTools(
     applyMiddleware(...middleware),
 ))
-
-store.getState();
 console.log(store.getState());
 export default store;
 

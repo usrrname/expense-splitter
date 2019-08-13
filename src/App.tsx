@@ -1,61 +1,54 @@
-import React, {Component, Dispatch} from 'react';
+import React, {Component} from 'react';
 import './App.css';
-import { CalcState, ShowState,Item} from './types/types';
 import './index.css';
+import { Item, CalcState, ReduxState} from './types/types';
 import { connect } from "react-redux";
-import {addItem} from './store/reducers/calculateReducer';
-import {getTotal} from './store/reducers/showPayReducer';
+import {addItem } from './store/reducers/calculateReducer';
 import ExpenseItem from './ExpenseItem';
 import store from './store/store';
-import { Action } from './store/actions/actions';
-import { Store } from 'redux';
 
 type Props = {
-  addItem: (state: CalcState) => Item[],
-  item?: Item,
+  addItem: () => void,
 }
 
-// type State = {
-//   items: Item[],
-//   total: number,
-//     income1: number,
-//     income2: number,
-//     person1: Array<number>,
-//     person2: Array<number>
-// }
-
-type State = CalcState;
+type State = {
+  // total: number,
+  income1: number,
+  income2: number,
+  items: Item[],
+  // person1: Array<number>,
+  // person2: Array<number>
+}
 
 class App extends Component<Props, State>{
 
-  readonly state: State = {
+  readonly state: CalcState = {
     items: [],
     income1: 0,
     income2: 0,
   }
   componentDidMount() {
-    store.subscribe(() =>
-    this.forceUpdate())    
+
 };
+
 componentWillUnmount(){
-  store.subscribe(()=>
-  !store.subscribe)
+
 }
   onItemClick = () => {
-    store.dispatch({
-      type: 'ADD_ITEM',
-      onclick: this.props.addItem(this.state)
-    })
+   this.props.addItem();
   }
 
   onGetTotal = () => {
     // this.props.getTotal(this.state.items);
   }
+  // onDeleteItem = (id: string) => {
+  //   this.props.deleteItem(id);
+  // }
 
   handleChange = (event: any): void => {
     // TO-DO refactor to make this shorter
       if (event.target.name === 'income1' ) {
-          this.setState({ income1 : event.target.value })
+        this.setState({ income1 : event.target.value })
       }
       else if (event.target.name === 'income2' ){
         this.setState({ income2 : event.target.value })
@@ -63,8 +56,8 @@ componentWillUnmount(){
   }
 
   render(){
-    const { addItem } = this.props;  
     const { items } = this.state;
+    const {addItem} = this.props;
     return (
       <div className="App d-flex justify-content-between">
         <h2>Income-based expense splitting</h2>
@@ -77,11 +70,11 @@ componentWillUnmount(){
           <input onChange={this.handleChange} name="income2"></input>
           <div className="flex-row">
           {items.map( item =>
-            <ExpenseItem key={item.id} name={item.name} cost={item.cost}/>,
+            <ExpenseItem key={item.id} name={item.name} cost={item.cost} />,
               {...items}
               )}
             {/* <button onClick={this.onGetTotal}>Calculate</button> */}
-            <button onClick={this.onItemClick} > + </button>
+            <button onClick={this.onItemClick} >+</button>
             <p>Total:</p>
           </div>
         </div>
@@ -90,9 +83,9 @@ componentWillUnmount(){
   }
 };
 
-  const mapStateToProps = (state: State) => {
+  const mapStateToProps = (state: ReduxState) => {
     return {
-      items: state.items,
+     calc: state.calc
     }
   }
   
@@ -100,7 +93,7 @@ componentWillUnmount(){
 export default connect(
   mapStateToProps,
   {
-   calcReducer: addItem
-   }
+    addItem
+  }
 )(App);
 

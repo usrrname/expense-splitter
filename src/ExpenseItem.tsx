@@ -5,6 +5,7 @@ type Props = {
   name: string,
   cost: number,
   onChange?: (value: number| string) => void,
+  // onDeleteItem: (id: string) => void
 }
 
 const ExpenseItem = ({id, name, cost, onChange}: Props) => {
@@ -13,7 +14,7 @@ const ExpenseItem = ({id, name, cost, onChange}: Props) => {
       <li key={id}>
         <label>Item</label><input name="name" type="text" placeholder="Name of expense" ></input>
         <label>Cost</label><input name="expense" type="number" placeholder="Amount"></input>
-        <button onClick={() => { }}> x </button>
+        <button onClick={() => {}}>x</button>
       </li>
     </div>
   )
