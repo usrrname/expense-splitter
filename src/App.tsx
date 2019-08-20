@@ -62,16 +62,14 @@ class App extends Component<Props, State>{
           <label>Their Income: </label>
           <input onChange={this.handleChange} name="income2"></input>
 
-          <div className="flex-row">
-
-
-
+          <div className="flex-column">
+            
             {items && (items.map(item =>
               <ExpenseItem key={item.id} name={item.name} cost={item.cost} onDeleteItem={this.onDeleteItem} />,
               { ...items }
             )
             )}
-            <button onClick={this.props.addItem} >+</button>
+            <button onClick={this.onItemClick} >+</button>
 
             {/* <p>Total:<span onChange={this.onGetTotal}>{this.props.show.total}</span></p> */}
           </div>
@@ -90,7 +88,7 @@ const mapStateToProps = (state: CalcState) => {
 
 export default connect(
   mapStateToProps, {
-    addItem
+    items: addItem
   }
 )(App);
 

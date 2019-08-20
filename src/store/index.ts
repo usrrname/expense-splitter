@@ -1,6 +1,5 @@
 import {AnyAction} from "redux"
 import {ThunkAction, ThunkDispatch} from "redux-thunk"
-
 import {CalcState} from "../types/types"
 import {reducer} from "./reducers/reducer"
 

@@ -10,10 +10,9 @@ export enum ShowPayFilters {
 	SHOW_USER2 = "SHOW_USER2"
 }
 
-export const AddItemAction = (newItem: Item): Action => {
+export const AddItemAction = (): Action => {
 	return {
-		type: "ADD_ITEM",
-		payload: newItem
+		type: "ADD_ITEM"
 	}
 }
 

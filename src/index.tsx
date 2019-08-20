@@ -8,10 +8,10 @@ import { DeleteItemAction, AddItemAction } from "./store/actions/actions";
 
 const rootElement = document.getElementById('root');
 
-render(
+const Root = () =>
   <Provider store={store}>
-    <App deleteItem={DeleteItemAction} />
-  </Provider>, rootElement as HTMLElement
-)
+    <App addItem={AddItemAction} deleteItem={DeleteItemAction} />
+  </Provider>
 
+render(<Root />, rootElement)
 store.subscribe(() => render)
