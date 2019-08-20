@@ -4,11 +4,14 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import store from './store/store';
-import {addItem} from './store/reducers/calculateReducer';
+import { DeleteItemAction, AddItemAction } from "./store/actions/actions";
 
-const rootElement= document.getElementById('root'); 
+const rootElement = document.getElementById('root');
 
 render(
-    <Provider store={store}>
-      <App addItem={addItem} />
-    </Provider>, rootElement as HTMLElement)
+  <Provider store={store}>
+    <App deleteItem={DeleteItemAction} />
+  </Provider>, rootElement as HTMLElement
+)
+
+store.subscribe(() => render)

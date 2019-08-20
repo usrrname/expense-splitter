@@ -16,23 +16,23 @@ class FilterLink extends Component<Props> {
         this.forceUpdate())    
     };
     
-    render() {
-      const props = this.props;
-      const state = store.getState();
+    // render() {
+      // const props = this.props;
+      // const state = store.getState();
       
-      return (
-        <Link
-          active={ props.filter === props.showState }
-          onClick={() =>
-            store.dispatch({
-              type: 'SHOW_ALL',
-              filter: props.filter
-            })
-          }
-        >
-          {props.children}
-        </Link>
-      );
-    }
+      // return (
+      //   <Link
+      //     active={ props.filter === props.showState }
+      //     onClick={() =>
+      //       store.dispatch({
+      //         type: 'SHOW_ALL',
+      //         filter: props.filter
+      //       })
+      //     }
+      //   >
+      //     {props.children}
+      //   </Link>
+      // );
+    // }
   }
   export default FilterLink;

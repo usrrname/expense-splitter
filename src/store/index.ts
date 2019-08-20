@@ -1,16 +1,13 @@
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {ReduxState} from '../types/types';
+import {AnyAction} from "redux"
+import {ThunkAction, ThunkDispatch} from "redux-thunk"
 
-export type Result<R> = ThunkAction<R, ReduxState, null, AnyAction>;
+import {CalcState} from "../types/types"
+import {reducer} from "./reducers/reducer"
 
-export type AsyncResult<T> = ThunkAction<Promise<T>, ReduxState, null, AnyAction>
+export type Result<R> = ThunkAction<R, CalcState, null, AnyAction>
 
-export type Dispatch = ThunkDispatch<ReduxState, null, AnyAction>;
+export type AsyncResult<T> = ThunkAction<Promise<T>, CalcState, null, AnyAction>
 
-export type Action = AnyAction;
+export type Dispatch = ThunkDispatch<CalcState, null, AnyAction>
 
-export type ApiAction = {
-  type: string,
-  endpoint: string
-}
+export type CalcState = ReturnType<typeof reducer>
