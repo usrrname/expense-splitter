@@ -1,17 +1,19 @@
 import * as React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import store from './store/store';
-import { DeleteItemAction, AddItemAction } from "./store/actions/actions";
-
+import { deleteUser } from "./store/reducers/UserListReducer";
 const rootElement = document.getElementById('root');
 
-const Root = () =>
-  <Provider store={store}>
-    <App addItem={AddItemAction} deleteItem={DeleteItemAction} />
-  </Provider>
+const render = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    rootElement)
+}
+render();
 
-render(<Root />, rootElement)
-store.subscribe(() => render)
+store.subscribe(render);

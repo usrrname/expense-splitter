@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { ChangeEvent, MouseEventHandler } from 'react';
 
 type Props = {
-  id?: string,
   name: string,
   cost: number,
-  onChange?: (value: number | string) => void,
-  onDeleteItem: (id: string) => void
+  onClick?: MouseEventHandler<void>;
+  deleteItem: (id: string) => void,
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
-const ExpenseItem = ({ id, name, cost, onChange, onDeleteItem }: Props) => {
+const ExpenseItem = ({ cost, onChange, deleteItem }: Props) => {
+
   return (
-    <div>
-      <li key={id}>
-        <label>Item</label><input value={name} type="text" placeholder="Name of expense" ></input>
-        <label>Cost</label><input value={cost} type="number" placeholder="Amount"></input>
-        <button onClick={() => onDeleteItem}>x</button>
-      </li>
-    </div>
+    <li className='expense-item'>
+      <label>Item</label><input onChange={onChange} type="text" name="item-name" placeholder="Name of expense"></input>
+      <label>Cost</label><input onChange={onChange} type="number" name="item-cost" placeholder="Amount" size={cost}></input>
+      <button onClick={() => deleteItem} type="button">x</button>
+    </li>
   )
 }
 
