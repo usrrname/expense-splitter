@@ -4,13 +4,15 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import store from './store/store';
-import { deleteUser } from "./store/reducers/UserListReducer";
 const rootElement = document.getElementById('root');
 
 const render = () => {
+  
+  const state = store.getState();
+
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <App {...state} />
     </Provider>,
     rootElement)
 }

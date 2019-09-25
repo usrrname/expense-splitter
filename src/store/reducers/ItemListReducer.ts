@@ -82,8 +82,8 @@ export const deleteItem = (id: string): Result<void> => {
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items)
 
-		items.filter((item: { id: any; }) => !item.id)
-
+		items.filter(item => item.id !== id)
+		console.log(items);
 		dispatch({ type: ItemActions.DELETE_ITEM, id })
 	}
 }

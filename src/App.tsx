@@ -1,7 +1,7 @@
 import React, { Component, ChangeEvent } from 'react';
 import './App.css';
 import './index.css';
-import { Item, User } from './types/types';
+import { Item, User, IState, UState } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem } from './store/reducers/ItemListReducer';
 import { deleteUser } from './store/reducers/UserListReducer';
@@ -11,11 +11,11 @@ import { AppState } from './store/store';
 import { largest } from './types/utils';
 
 interface AppProps {
-  items: Item[],
+  ItemList: IState,
+  UserList: UState,
   initialCount: number,
   initialPeople: number,
   users: User[],
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
 type StateProps = {
@@ -56,11 +56,6 @@ class App extends Component<Props>{
   onItemClick = () => {
     this.props.addItem();
   }
-  onDeleteUser = (event: any): void => {
-    event.preventDefault();
-    const id = String(event.target.parentNode.getAttribute('data-id'));
-    this.props.deleteUser(id)
-  }
 
   handleChange = (event: any): void => {
     if (event.target.name === 'user-income') {
@@ -69,7 +64,6 @@ class App extends Component<Props>{
           income: Number(event.target.value)
         }
       })
-      this.updateIncomeRatio();
     }
   }
 
@@ -80,7 +74,6 @@ class App extends Component<Props>{
       return largest(income, income++)
     }
   }
-
 
   updateItem = (inputName: string, item: Item[], inputValue: string) => {
     if (inputName === 'item-name') {
@@ -117,7 +110,7 @@ class App extends Component<Props>{
           <h4>Annual income</h4>
 
           <UserList
-            deleteUser={this.onDeleteUser}
+            deleteUser={this.props.deleteUser}
             users={this.props.users}
             onChange={this.handleChange}
           />
