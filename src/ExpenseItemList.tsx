@@ -14,9 +14,9 @@ const ExpenseItemList = ({ items, onChange, deleteItem }: Props) => {
   const listItems = items.map((item: Item) => (
     // i used some dummy data here so it would render
     <ExpenseItem
-      key={'someID'}
-      name={'someItem'}
-      cost={30}
+      key={item.id}
+      name={item.name}
+      cost={item.cost}
       deleteItem={deleteItem}
       onChange={onChange}
     />
