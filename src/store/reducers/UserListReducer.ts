@@ -44,30 +44,41 @@ export type UserListActions = ReturnType<typeof ADD_USER> | ReturnType<typeof DE
 
 const UserReducer: Reducer<UState, Action> = (state = initialState, action: UserListActions) => {
   switch (action.type) {
-    case `${ADD_USER}_SUCCESS`:
+    case ADD_USER:
       return {
         ...state,
         users: [...state.users, action.payload]
       }
-    case `${DELETE_USER}_SUCCESS`:
+    case DELETE_USER:
       return {
         ...state,
-        users: [state.users.map(user => user.id !== action.index)]
+        users: [...state.users,
+        state.users.map(user => user.id !== action.payload),
+      action.payload]
       }
     default:
       return state
   }
 }
-
 export default UserReducer;
 
-export const deleteUser = (id: string): Result<void> => {
-  debugger;
-  const IdToRemove = id;
+export const addUser = (): Result<void> => {
+  let user: User = {
+    id: v4(),
+    name: '',
+    income: 0,
+    paymentAmount: 0,
+  }
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users = users.filter(user => user.id !== IdToRemove)
-
-    dispatch({ type: UserActions.DELETE_USER, id })
+    users = users.concat(user)
+    dispatch({ type: UserActions.ADD_USER, payload: user })
+  }
+}
+export const deleteUser = (id: string): Result<void> => {
+  return (dispatch, getState) => {
+    let users: User[] = cloneDeep(getState().UserList.users)
+    users = users.filter(user => user.id !== id)
+    dispatch({ type: UserActions.DELETE_USER, payload: id })
   }
 }

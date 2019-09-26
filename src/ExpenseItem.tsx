@@ -1,22 +1,29 @@
-import React, { ChangeEvent, MouseEventHandler } from 'react';
+import React, { ChangeEvent, MouseEventHandler, Component } from 'react';
 
 type Props = {
+  id: string,
   name: string,
   cost: number,
-  onClick?: MouseEventHandler<void>;
-  deleteItem: (id: string) => void,
+  onItemChange: (event: any) => void,
+  onClick: (event:any) => void,
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
 }
 
-const ExpenseItem = ({ cost, onChange, deleteItem }: Props) => {
-
-  return (
-    <li className='expense-item'>
-      <label>Item</label><input onChange={onChange} type="text" name="item-name" placeholder="Name of expense"></input>
-      <label>Cost</label><input onChange={onChange} type="number" name="item-cost" placeholder="Amount" size={cost}></input>
-      <button onClick={() => deleteItem} type="button">x</button>
+class ExpenseItem extends Component<Props>{
+  
+onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  this.props.onItemChange(event.target.value)
+ }
+  render(){
+    const {cost, name, onChange, onClick, id} = this.props;
+    return (
+    <li className='expense-item' data-id={id}>
+      <label>Item</label><input onChange={this.onChange} type="text" name="item-name" placeholder="Name of expense" value={name}></input>
+      <label>Cost</label><input onChange={this.onChange} type="number" name="item-cost" placeholder="Amount" value={cost}></input>
+      <button onClick={onClick} type="button"> x </button>
     </li>
   )
+  }
 }
 
 export default ExpenseItem;

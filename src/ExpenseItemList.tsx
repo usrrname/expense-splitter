@@ -4,21 +4,19 @@ import { Item } from './types/types';
 
 type Props = {
   items: Item[];
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  deleteItem: (id: string) => void;
+  onItemChange: (event: any) => void,
+  onClick: (event: any) => void,
 };
 
-// adding new items comes up as null for some reason but the state gets updated
-// probably has something to do with the action
-const ExpenseItemList = ({ items, onChange, deleteItem }: Props) => {
+const ExpenseItemList = ({ items, onItemChange, onClick }: Props) => {
+
   const listItems = items.map((item: Item) => (
-    // i used some dummy data here so it would render
     <ExpenseItem
-      key={item.id}
+      key={item.id} id={item.id}
       name={item.name}
       cost={item.cost}
-      deleteItem={deleteItem}
-      onChange={onChange}
+      onClick={onClick}
+      onItemChange={onItemChange}
     />
   ));
 

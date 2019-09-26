@@ -4,28 +4,29 @@ import './index.css';
 import { Item, User, IState, UState } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem } from './store/reducers/ItemListReducer';
-import { deleteUser } from './store/reducers/UserListReducer';
+import { addUser, deleteUser } from './store/reducers/UserListReducer';
 import UserList from './UserList';
 import ExpenseItemList from './ExpenseItemList';
-import { AppState } from './store/store';
-import { largest } from './types/utils';
+import store, { AppState } from './store/store';
 
 interface AppProps {
   ItemList: IState,
   UserList: UState,
   initialCount: number,
   initialPeople: number,
-  users: User[],
+
 }
 
 type StateProps = {
   items: Item[],
+  users: User[],
   itemCount: number,
   headCount: number,
 }
 
 type DispatchProps = {
   addItem: () => void,
+  addUser: () => void,
   deleteItem: (id: string) => void,
   deleteUser: (id: string) => void,
 }
@@ -39,91 +40,85 @@ class App extends Component<Props>{
   }
 
   readonly state: StateProps = {
+    users: this.props.users,
     items: this.props.items,
     itemCount: this.props.initialCount,
     headCount: this.props.initialPeople,
   };
 
-  componentWillReceiveProps({ initialCount, initialPeople }: Props) {
-    if (initialCount != null && initialCount !== initialCount) {
-      this.setState({ itemCount: Number(this.props.items.length) });
+  componentDidMount() {
+
+  }
+  componentDidUpdate() {
+
+  }
+  componentWillReceiveProps() {
+    const { initialCount, initialPeople, items, users } = this.props;
+    if (initialCount != null && this.state.itemCount !== initialCount) {
+      this.setState({ itemCount: Number(items.length) });
     }
-    if (initialPeople != null && initialPeople !== initialPeople) {
-      this.setState({ headCount: Number(this.props.items.length) });
+    if (initialPeople != null && this.state.headCount !== initialPeople) {
+      this.setState({ headCount: Number(users.length) });
     }
   }
 
-  onItemClick = () => {
+  onAddItem = () => {
     this.props.addItem();
   }
 
-  handleChange = (event: any): void => {
-    if (event.target.name === 'user-income') {
-      this.setState({
-        user: {
-          income: Number(event.target.value)
-        }
-      })
-    }
+  handleChange = (event: any) => {
+    this.setState({
+      ...this.state.users
+    })
   }
 
-  updateIncomeRatio = () => {
-    const { users } = this.props;
-    for (let i = 0; i < users.length; i++) {
-      let { income } = users[i];
-      return largest(income, income++)
-    }
+  handleItemChange = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      ...this.state.items
+    })
   }
 
-  updateItem = (inputName: string, item: Item[], inputValue: string) => {
-    if (inputName === 'item-name') {
-      item[0].name = inputValue;
-    }
-    if (inputName === 'item-cost') {
-      item[0].cost = Number(inputValue);
-    }
-    return item
+  onAddUser = () => this.props.addUser();
+
+  onDeleteUser = (event: any): void => {
+    event.preventDefault();
+    const id = String(event.target.parentNode.getAttribute('data-id'));
+    this.props.deleteUser(id)
   }
 
-  onInput = (event: ChangeEvent<HTMLInputElement>): void => {
-    const { items } = this.props;
-
-    const selectedItem = Object.assign({}, items);
-    let { id } = selectedItem[0];
-    let inputName = event.target.name;
-    let inputValue = event.target.value;
-
-    let item = items.filter(item =>
-      item.id === id
-    )
-    this.updateItem(inputName, item, inputValue);
+  onDeleteItem = (event: any): void => {
+    event.preventDefault();
+    const id = String(event.target.parentNode.getAttribute('data-id'));
+    this.props.deleteItem(id)
   }
 
   render() {
-
+    const { items } = this.state;
     return (
 
-      <div className="App d-flex justify-content-between">
+      <div className="App d-flex justify-content-start">
         <h2>Income-based expense splitting</h2>
 
         <div className="flex-row">
           <h4>Annual income</h4>
 
           <UserList
-            deleteUser={this.props.deleteUser}
             users={this.props.users}
+            {...this.state.users}
+            onClick={this.onDeleteUser}
             onChange={this.handleChange}
           />
+          <button onClick={this.onAddUser} type="button">+</button>
 
           <div className="flex-column expense-list-wrapper">
             <ExpenseItemList
-              items={this.props.items}
-              {...this.state.items}
-              onChange={this.onInput}
-              deleteItem={deleteItem}
+
+              items={items}
+              onItemChange={this.handleItemChange}
+              onClick={this.onDeleteItem}
             />
-            <button onClick={this.onItemClick} type="button">+</button>
-            {/* <p>Total:<span onChange={this.onGetTotal}>{this.props.show.total}</span></p> */}
+            <button onClick={this.onAddItem} type="button">+</button>
+
           </div>
         </div>
       </div>
@@ -134,19 +129,18 @@ class App extends Component<Props>{
 const mapStateToProps = (state: AppState) => {
   return {
     itemCount: state.ItemList.itemCount,
-    items: state.ItemList.items,
     headCount: state.UserList.headCount,
+    items: state.ItemList.items,
     users: state.UserList.users,
   }
 }
-
 
 export default connect(
   mapStateToProps,
   {
     addItem,
+    addUser,
     deleteItem,
     deleteUser
   }
 )(App);
-
