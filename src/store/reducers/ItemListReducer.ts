@@ -78,12 +78,8 @@ export const addItem = (): Result<void> => {
   };
   console.log('test');
   return (dispatch, getState) => {
-    let items = getState().ItemList.items;
-    const currentCopy = cloneDeep(items);
-
-    items = currentCopy.concat(newItem);
-
-    dispatch({ type: ItemActions.ADD_ITEM, items });
+    // fixed it! was missing 'payload' lol
+    dispatch({ type: ItemActions.ADD_ITEM, payload: newItem });
   };
 };
 
