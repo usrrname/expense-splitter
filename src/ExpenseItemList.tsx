@@ -1,22 +1,20 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import ExpenseItem from './ExpenseItem';
 import { Item } from './types/types';
 
 type Props = {
   items: Item[];
-  onItemChange: (event: any) => void,
   onClick: (event: any) => void,
 };
 
-const ExpenseItemList = ({ items, onItemChange, onClick }: Props) => {
-
+const ExpenseItemList =(props:Props) => {
+  const {items} = props;
   const listItems = items.map((item: Item) => (
     <ExpenseItem
       key={item.id} id={item.id}
       name={item.name}
       cost={item.cost}
-      onClick={onClick}
-      onItemChange={onItemChange}
+      onClick={props.onClick}
     />
   ));
 
@@ -27,8 +25,9 @@ const ExpenseItemList = ({ items, onItemChange, onClick }: Props) => {
       </form>
     );
   };
-
-  return renderList();
-};
+  return(
+    renderList()
+  )
+}
 
 export default ExpenseItemList;

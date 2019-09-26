@@ -59,7 +59,7 @@ export const ItemListReducer: Reducer<IState, Action> = (
 		case ItemActions.DELETE_ITEM:
 			return {
 				...state,
-				items: [state.items.map(item => item.id !== action.payload)]
+				items: [state.items.filter((item, index) => item.id !== action.index)]
 			};
 		default:
 			return state;

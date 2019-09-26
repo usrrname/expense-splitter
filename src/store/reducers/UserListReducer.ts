@@ -54,7 +54,7 @@ const UserReducer: Reducer<UState, Action> = (state = initialState, action: User
         ...state,
         users: [...state.users,
         state.users.map(user => user.id !== action.payload),
-      action.payload]
+        action.payload]
       }
     default:
       return state
@@ -63,16 +63,17 @@ const UserReducer: Reducer<UState, Action> = (state = initialState, action: User
 export default UserReducer;
 
 export const addUser = (): Result<void> => {
-  let user: User = {
+  const newUser: User = {
     id: v4(),
     name: '',
     income: 0,
     paymentAmount: 0,
   }
+
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users = users.concat(user)
-    dispatch({ type: UserActions.ADD_USER, payload: user })
+    users = users.concat(newUser)
+    dispatch({ type: UserActions.ADD_USER, payload: newUser })
   }
 }
 export const deleteUser = (id: string): Result<void> => {

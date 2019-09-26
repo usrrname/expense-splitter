@@ -12,11 +12,10 @@ type Props = {
 const UserList = ({ onChange, users, onClick }: Props) => {
   const userItems = users.map((user: User) =>
     <UserField
-      onClick={onClick}
       key={user.id} id={user.id}
       income={user.income}
       name={user.name}
-      onChange={onChange}
+      onClick={onClick}
     />
   )
 

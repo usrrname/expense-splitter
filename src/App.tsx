@@ -11,10 +11,7 @@ import store, { AppState } from './store/store';
 
 interface AppProps {
   ItemList: IState,
-  UserList: UState,
-  initialCount: number,
-  initialPeople: number,
-
+  UserList: UState
 }
 
 type StateProps = {
@@ -34,16 +31,12 @@ type DispatchProps = {
 type Props = AppProps & StateProps & DispatchProps;
 
 class App extends Component<Props>{
-  static defaultProps = {
-    initialCount: 1,
-    initialPeople: 2
-  }
 
   readonly state: StateProps = {
     users: this.props.users,
     items: this.props.items,
-    itemCount: this.props.initialCount,
-    headCount: this.props.initialPeople,
+    itemCount: 1,
+    headCount: 2,
   };
 
   componentDidMount() {
@@ -53,29 +46,17 @@ class App extends Component<Props>{
 
   }
   componentWillReceiveProps() {
-    const { initialCount, initialPeople, items, users } = this.props;
-    if (initialCount != null && this.state.itemCount !== initialCount) {
+    const { items, users } = this.props;
+    if (this.state.itemCount != null && this.state.itemCount !== items.length) {
       this.setState({ itemCount: Number(items.length) });
     }
-    if (initialPeople != null && this.state.headCount !== initialPeople) {
+    if (this.state.headCount != null && this.state.headCount !== users.length) {
       this.setState({ headCount: Number(users.length) });
     }
   }
 
   onAddItem = () => {
     this.props.addItem();
-  }
-
-  handleChange = (event: any) => {
-    this.setState({
-      ...this.state.users
-    })
-  }
-
-  handleItemChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ...this.state.items
-    })
   }
 
   onAddUser = () => this.props.addUser();
@@ -93,9 +74,8 @@ class App extends Component<Props>{
   }
 
   render() {
-    const { items } = this.state;
+    const { items, users } = this.props;
     return (
-
       <div className="App d-flex justify-content-start">
         <h2>Income-based expense splitting</h2>
 
@@ -103,18 +83,15 @@ class App extends Component<Props>{
           <h4>Annual income</h4>
 
           <UserList
-            users={this.props.users}
-            {...this.state.users}
+            users={users}
+            {...users}
             onClick={this.onDeleteUser}
-            onChange={this.handleChange}
           />
           <button onClick={this.onAddUser} type="button">+</button>
 
           <div className="flex-column expense-list-wrapper">
             <ExpenseItemList
-
               items={items}
-              onItemChange={this.handleItemChange}
               onClick={this.onDeleteItem}
             />
             <button onClick={this.onAddItem} type="button">+</button>
