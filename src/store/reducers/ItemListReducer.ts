@@ -22,7 +22,6 @@ export enum ItemActions {
 }
 
 export const ADD_ITEM = (item: Item): Action => {
-	console.log('test');
 	return {
 		type: ItemActions.ADD_ITEM,
 		payload: item
@@ -59,7 +58,9 @@ export const ItemListReducer: Reducer<IState, Action> = (
 		case ItemActions.DELETE_ITEM:
 			return {
 				...state,
-				items: [state.items.filter((item, index) => item.id !== action.index)]
+				items: [
+					state.items.find((item) =>
+					item.id !== action.payload)]
 			};
 		default:
 			return state;
@@ -85,7 +86,8 @@ export const deleteItem = (id: string): Result<void> => {
 
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items);
-		items = items.filter(item => item.id !== id)
+		let removedItemArr = items.filter((item) => item.id !== id);
+		items = removedItemArr.flat(1)
 		dispatch({ type: ItemActions.DELETE_ITEM, payload: id });
 	};
 };

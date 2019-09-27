@@ -4,7 +4,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import { UState, Action, User } from "../../types/types";
 import { Reducer } from "redux";
 
-
 const initialState: UState = {
   users: [{
     id: v4(),
@@ -52,9 +51,7 @@ const UserReducer: Reducer<UState, Action> = (state = initialState, action: User
     case DELETE_USER:
       return {
         ...state,
-        users: [...state.users,
-        state.users.map(user => user.id !== action.payload),
-        action.payload]
+        users: [state.users.filter(user => user.id !== action.payload)]
       }
     default:
       return state
@@ -63,6 +60,7 @@ const UserReducer: Reducer<UState, Action> = (state = initialState, action: User
 export default UserReducer;
 
 export const addUser = (): Result<void> => {
+
   const newUser: User = {
     id: v4(),
     name: '',
@@ -79,7 +77,7 @@ export const addUser = (): Result<void> => {
 export const deleteUser = (id: string): Result<void> => {
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users = users.filter(user => user.id !== id)
+    users.filter(user => user.id !== id)
     dispatch({ type: UserActions.DELETE_USER, payload: id })
   }
 }

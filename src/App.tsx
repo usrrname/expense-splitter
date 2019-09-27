@@ -1,22 +1,20 @@
 import React, { Component, ChangeEvent } from 'react';
 import './App.css';
 import './index.css';
-import { Item, User, IState, UState } from './types/types';
+import { Item, User } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem } from './store/reducers/ItemListReducer';
 import { addUser, deleteUser } from './store/reducers/UserListReducer';
-import UserList from './UserList';
-import ExpenseItemList from './ExpenseItemList';
+import UserList from './components /UserList';
+import ExpenseItemList from './components /ExpenseItemList';
 import store, { AppState } from './store/store';
 
-interface AppProps {
-  ItemList: IState,
-  UserList: UState
-}
+type AppProps = {
 
+}
 type StateProps = {
+  users: User[]
   items: Item[],
-  users: User[],
   itemCount: number,
   headCount: number,
 }
@@ -44,8 +42,6 @@ class App extends Component<Props>{
   }
   componentDidUpdate() {
 
-  }
-  componentWillReceiveProps() {
     const { items, users } = this.props;
     if (this.state.itemCount != null && this.state.itemCount !== items.length) {
       this.setState({ itemCount: Number(items.length) });
@@ -53,6 +49,9 @@ class App extends Component<Props>{
     if (this.state.headCount != null && this.state.headCount !== users.length) {
       this.setState({ headCount: Number(users.length) });
     }
+  }
+  componentWillReceiveProps() {
+
   }
 
   onAddItem = () => {
@@ -84,17 +83,16 @@ class App extends Component<Props>{
 
           <UserList
             users={users}
-            {...users}
+            onAddUser={this.onAddUser}
             onClick={this.onDeleteUser}
           />
-          <button onClick={this.onAddUser} type="button">+</button>
 
           <div className="flex-column expense-list-wrapper">
             <ExpenseItemList
               items={items}
               onClick={this.onDeleteItem}
+              onAddItem={this.onAddItem}
             />
-            <button onClick={this.onAddItem} type="button">+</button>
 
           </div>
         </div>

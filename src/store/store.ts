@@ -3,7 +3,7 @@ import { Action, Dispatch } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension"
 import { ItemListReducer } from "./reducers/ItemListReducer"
-import { StoreState, UState } from "../types/types";
+import { StoreState } from "../types/types";
 import UserReducer from "./reducers/UserListReducer";
 
 const middleware = [thunk]

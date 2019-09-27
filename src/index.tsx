@@ -7,12 +7,12 @@ import store from './store/store';
 const rootElement = document.getElementById('root');
 
 const render = () => {
-  
+
   const state = store.getState();
 
   ReactDOM.render(
     <Provider store={store}>
-      <App {...state} />
+      <App />
     </Provider>,
     rootElement)
 }
