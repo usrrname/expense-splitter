@@ -60,7 +60,7 @@ export const ItemListReducer: Reducer<IState, Action> = (
 				...state,
 				items: [
 					state.items.find((item) =>
-					item.id !== action.payload)]
+						item.id !== action.payload)]
 			};
 		default:
 			return state;
@@ -83,10 +83,11 @@ export const addItem = (): Result<void> => {
 }
 
 export const deleteItem = (id: string): Result<void> => {
-
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items);
-		let removedItemArr = items.filter((item) => item.id !== id);
+		let removedItemArr = items.filter(item =>
+			item.id !== id
+		);
 		items = removedItemArr.flat(1)
 		dispatch({ type: ItemActions.DELETE_ITEM, payload: id });
 	};

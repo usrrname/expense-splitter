@@ -1,4 +1,3 @@
-
 import React, { ChangeEvent } from 'react';
 import { User } from '../types/types';
 import UserField from './UserItem';
@@ -8,14 +7,16 @@ type Props = {
   users: User[],
   onAddUser: () => void,
   onClick: (event: any) => void,
+  handleOnChange: (event: any) => void
 }
 
-const UserList = ({ onAddUser, users, onClick }: Props) => {
+const UserList = ({ onAddUser, handleOnChange, users, onClick }: Props) => {
   const userItems = users.map((user: User) =>
     <UserField
+      user={user}
       key={user.id}
       id={user.id}
-      value={user}
+      handleOnChange={handleOnChange}
       onClick={onClick}
     />
   )
@@ -33,5 +34,4 @@ const UserList = ({ onAddUser, users, onClick }: Props) => {
     renderUsers()
   )
 }
-
 export default UserList;

@@ -77,7 +77,7 @@ export const addUser = (): Result<void> => {
 export const deleteUser = (id: string): Result<void> => {
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users.filter(user => user.id !== id)
+    users = users.filter(user => user.id !== id)
     dispatch({ type: UserActions.DELETE_USER, payload: id })
   }
 }
