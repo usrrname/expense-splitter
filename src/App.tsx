@@ -10,9 +10,9 @@ import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseItem from './components /ExpenseItem';
 
-type StateProps = {
-  users: User[]
+type State = {
   items: Item[],
+  users: User[],
 }
 
 type DispatchProps = {
@@ -22,53 +22,31 @@ type DispatchProps = {
   deleteUser: (id: string) => void,
 }
 
-type Props = StateProps & DispatchProps;
+type Props = DispatchProps & State;
 
 class App extends Component<Props>{
 
-  readonly state: StateProps = {
-    items: this.props.items,
-    users: this.props.users
-  };
+  state: State = {
+    items: [],
+    users: []
+  }
 
-  inputChangeHandler = (event: any) => {
-    const items = [...this.state.items];
-    const index = items.findIndex(item => item.id === event.target.parentNode.id);
-    if (index !== -1) {
-      this.setState(
-        {
-          items: {
-            [index]: {
-              name: event.target.value
+
+  handleOnChange = (event: any) => {
+    const { parentNode, value, name } = event.currentTarget;
+    this.setState((prevState: State, props: Props) => {
+      return {
+        items: [
+          ...props.items,
+          props.items.map(item => {
+            if (parentNode.id === item.id) {
+              return name === 'name' ? item.name = String(value) : item.cost = Number(value);
             }
-          }
-        })
-    }
+          })
+        ]
+      }
+    })
   }
-
-  handleUserChange = (event: any) => {
-    const users = { ...this.state.users }
-    users[event.target.parentNode.id].name = event.target.value //currentTarget returns input field
-    this.setState({ users: users })
-  }
-  componentWillMount() {
-
-  }
-  componentDidUpdate() {
-
-    const { items, users } = this.state;
-    // if (this.state.itemCount != null && this.state.itemCount !== items.length) {
-    //   this.setState({ itemCount: Number(items.length) });
-    // }
-    // if (this.state.headCount != null && this.state.headCount !== users.length) {
-    //   this.setState({ headCount: Number(users.length) });
-    // }
-  }
-  componentWillReceiveProps() {
-
-
-  }
-
 
   onAddItem = () => {
     this.props.addItem();
@@ -88,13 +66,15 @@ class App extends Component<Props>{
     this.props.deleteItem(id)
   }
 
-  render() {
-    const { items, users } = this.props;
+  public render() {
+    const { users, items } = this.props;
+
     const listItems = items.map((item: Item) => (
       <ExpenseItem
         key={item.id}
         id={item.id}
-        handleOnChange={this.inputChangeHandler}
+        item={item}
+        handleOnChange={this.handleOnChange}
         onClick={this.onDeleteItem}
       />
     ));
@@ -115,9 +95,8 @@ class App extends Component<Props>{
             users={users}
             onAddUser={this.onAddUser}
             onClick={this.onDeleteUser}
-            handleOnChange={this.handleUserChange}
+            handleOnChange={this.handleOnChange}
           />
-
 
         </div>
       </div>

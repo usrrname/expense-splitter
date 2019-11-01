@@ -11,16 +11,17 @@ type Props = {
   handleOnChange: (event: any) => void
 }
 
-const Input = ({ className, placeholder, value, type, handleOnChange }: Props) => {
-
+const Input = ({ className, name, placeholder, value, type, handleOnChange }: Props) => {
   return (
     <input
       onChange={handleOnChange}
       className={className}
+      name={name}
       type={type}
       placeholder={placeholder}
       value={value}
     />
   )
+  
 }
 export default Input;
