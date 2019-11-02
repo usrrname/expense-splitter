@@ -9,6 +9,7 @@ import { addUser, deleteUser } from './store/reducers/UserListReducer';
 import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseItem from './components /ExpenseItem';
+import cloneDeep from 'lodash/cloneDeep';
 
 type State = {
   items: Item[],
@@ -34,19 +35,27 @@ class App extends Component<Props>{
 
   handleOnChange = (event: any) => {
     const { parentNode, value, name } = event.currentTarget;
-    this.setState((prevState: State, props: Props) => {
+    const items = cloneDeep(this.props.items)
+
+    this.setState((prevState, props) => {
       return {
-        items: [
-          ...props.items,
+        items:
           props.items.map(item => {
             if (parentNode.id === item.id) {
-              return name === 'name' ? item.name = String(value) : item.cost = Number(value);
-            }
+              return name === 'name' ? {
+                ...item,
+                name: String(value)
+              } :
+                {
+                  ...item,
+                  cost: Number(value)
+                };
+            };
           })
-        ]
       }
     })
   }
+
 
   onAddItem = () => {
     this.props.addItem();
