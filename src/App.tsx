@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import './index.css';
-import { Item, User, IState } from './types/types';
+import { Item, User } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
 import { addUser, deleteUser } from './store/reducers/UserListReducer';
 import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseItem from './components /ExpenseItem';
+import ExpenseList from './components /ExpenseList';
 
 type State = {
   items: Item[],
@@ -37,18 +38,18 @@ class App extends Component<Props>{
 
   handleOnChange = (event: any) => {
     const { parentNode, value, name } = event.target;
+   
     if (event && value != null && value.length >= 0) {
       this.setState({
         inputValue: value,
         isFocused: true
       })
     }
-
+    
     this.setState((prevState: State, props: Props) => {
       return {
         items: props.items.map(item => {
           if (parentNode.id === item.id) {
-
             if (name == 'name') {
               item.name = value;
               return {
@@ -67,10 +68,6 @@ class App extends Component<Props>{
         }
         )
       }
-    })
-
-    this.setState({
-      isFocused: false
     })
   }
 
@@ -95,15 +92,6 @@ class App extends Component<Props>{
   public render() {
     const { users, items } = this.props;
 
-    const listItems = items.map((item: Item) => (
-      <ExpenseItem
-        key={item.id}
-        id={item.id}
-        item={item}
-        handleOnChange={this.handleOnChange}
-        onClick={this.onDeleteItem}
-      />
-    ));
     return (
 
       <div className="App d-flex justify-content-start">
@@ -111,12 +99,12 @@ class App extends Component<Props>{
 
         <div className="flex-row">
           <h4>Annual income</h4>
-          <ul className='expense-list'>
-            {listItems}
-            <button onClick={this.onAddItem} type="button">
-              + Add Item
-              </button>
-          </ul>
+          <ExpenseList
+            items={items}
+            addItem={this.onAddItem}
+            deleteItem={this.onDeleteItem}
+            handleOnChange={this.handleOnChange}
+          />
           {!this.state.isFocused && <span>Total: {this.props.getTotal} </span>}
 
           <UserList

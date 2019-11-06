@@ -69,13 +69,14 @@ export const ItemListReducer: Reducer<IState, Action> = (
 				...state,
 				items: [
 					state.items.find((item) =>
-						item.id !== action.payload)]
+						item.id !== action.payload)
+				]
 			};
-			case ItemActions.INPUT_FOCUS:
-				return {
-					...state,
-					isFocused: action.payload
-				}
+		case ItemActions.INPUT_FOCUS:
+			return {
+				...state,
+				isFocused: action.payload
+			}
 		default:
 			return state;
 	}

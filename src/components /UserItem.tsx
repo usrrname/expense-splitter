@@ -1,5 +1,5 @@
 
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import Input from './generic/Input';
 import { User } from '../types/types';
 
