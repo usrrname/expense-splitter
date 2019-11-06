@@ -1,7 +1,6 @@
 import React from 'react';
 import { Item } from '../types/types';
 import ExpenseItem from './ExpenseItem';
-import { addItem, deleteItem } from '../store/reducers/ItemListReducer';
 
 type Props = {
   items: Item[],
@@ -10,7 +9,7 @@ type Props = {
   handleOnChange: (event: any) => void
 }
 
-const ExpenseList = ({items, addItem, deleteItem,handleOnChange}: Props) => {
+const ExpenseList = ({ items, addItem, deleteItem, handleOnChange }: Props) => {
 
   const listItems = items.map((item: Item) => (
     <ExpenseItem
@@ -22,10 +21,11 @@ const ExpenseList = ({items, addItem, deleteItem,handleOnChange}: Props) => {
     />
   ));
   return (<ul className='expense-list'>
-  {listItems}
-  <button onClick={addItem} type="button">
-    + Add Item
+    {listItems}
+    <button onClick={addItem} type="button">
+      + Add Item
     </button>
-</ul>
-  )}
+  </ul>
+  )
+}
 export default ExpenseList;

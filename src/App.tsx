@@ -7,7 +7,6 @@ import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer'
 import { addUser, deleteUser } from './store/reducers/UserListReducer';
 import { AppState } from './store/store';
 import UserList from './components /UserList';
-import ExpenseItem from './components /ExpenseItem';
 import ExpenseList from './components /ExpenseList';
 
 type State = {
@@ -38,14 +37,14 @@ class App extends Component<Props>{
 
   handleOnChange = (event: any) => {
     const { parentNode, value, name } = event.target;
-   
+
     if (event && value != null && value.length >= 0) {
       this.setState({
         inputValue: value,
         isFocused: true
       })
     }
-    
+
     this.setState((prevState: State, props: Props) => {
       return {
         items: props.items.map(item => {
@@ -99,6 +98,7 @@ class App extends Component<Props>{
 
         <div className="flex-row">
           <h4>Annual income</h4>
+
           <ExpenseList
             items={items}
             addItem={this.onAddItem}
