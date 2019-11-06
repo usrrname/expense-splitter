@@ -10,15 +10,18 @@ const initialState: IState = {
 		{
 			id: v4(),
 			name: '',
-			cost: 0
+			cost: 0,
 		}
-	]
+	],
+	isFocused: false
 };
 
 //actions
 export enum ItemActions {
 	ADD_ITEM = 'ADD_ITEM',
-	DELETE_ITEM = 'DELETE_ITEM'
+	DELETE_ITEM = 'DELETE_ITEM',
+	GET_TOTAL = 'GET_TOTAL',
+	INPUT_FOCUS = 'INPUT_FOCUS'
 }
 
 export const ADD_ITEM = (item: Item): Action => {
@@ -35,11 +38,17 @@ export const DELETE_ITEM = (item: Item): Action => {
 	};
 };
 
-// export const GET_TOTAL = (): Action => {
-// 	return {
-// 		type: "GET_TOTAL"
-// 	}
-// }
+export const GET_TOTAL = (): Action => {
+	return {
+		type: "GET_TOTAL",
+	}
+}
+
+export const INPUT_FOCUS = (): Action => {
+	return {
+		type: "INPUT_FOCUS",
+	}
+}
 
 type ListActions = ReturnType<typeof ADD_ITEM> | ReturnType<typeof DELETE_ITEM>;
 
@@ -62,6 +71,11 @@ export const ItemListReducer: Reducer<IState, Action> = (
 					state.items.find((item) =>
 						item.id !== action.payload)]
 			};
+			case ItemActions.INPUT_FOCUS:
+				return {
+					...state,
+					isFocused: action.payload
+				}
 		default:
 			return state;
 	}
@@ -73,7 +87,7 @@ export const addItem = (): Result<void> => {
 	let item: Item = {
 		id: v4(),
 		name: '',
-		cost: 0
+		cost: 0,
 	};
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items);
@@ -85,7 +99,7 @@ export const addItem = (): Result<void> => {
 export const deleteItem = (id: string): Result<void> => {
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items);
-		let removedItemArr = items.filter(item =>
+		let removedItemArr = items.filter((item: Item) =>
 			item.id !== id
 		);
 		items = removedItemArr.flat(1)
@@ -94,14 +108,14 @@ export const deleteItem = (id: string): Result<void> => {
 };
 
 //calculate total
-// export const getTotal = (): Result<void> => {
-// 	return (dispatch, getState) => {
-// 		const items = deepCopy(getState().items)
+export const getTotal = (): Result<void> => {
+	return (dispatch, getState) => {
+		const items = cloneDeep(getState().ItemList.items)
 
-// 		const total = items.reduce((total: number, item: Item) => {
-// 			return total + item.cost
-// 		}, 0)
+		const total = items.reduce((total: number, item: Item) => {
+			return total += item.cost
+		}, 0)
 
-// 		dispatch({ type: "GET_TOTAL", total })
-// 	}
-// }
+		dispatch({ type: "GET_TOTAL", total })
+	}
+}

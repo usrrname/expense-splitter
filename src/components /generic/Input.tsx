@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, SyntheticEvent, FocusEventHandler } from 'react';
 
 type Props = {
   id?: string,
@@ -7,8 +7,9 @@ type Props = {
   name?: string;
   placeholder?: string;
   className?: string;
+  onFocus?: (event: FocusEvent) => void,
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-  handleOnChange: (event: any) => void
+  handleOnChange: (event: any) => void,
 }
 
 const Input = ({ className, name, placeholder, value, type, handleOnChange }: Props) => {
@@ -22,6 +23,6 @@ const Input = ({ className, name, placeholder, value, type, handleOnChange }: Pr
       value={value}
     />
   )
-  
+
 }
 export default Input;

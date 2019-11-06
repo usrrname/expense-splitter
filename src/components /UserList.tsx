@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, SyntheticEvent, FocusEventHandler } from 'react';
 import { User } from '../types/types';
 import UserField from './UserItem';
 
@@ -10,7 +10,7 @@ type Props = {
   handleOnChange: (event: any) => void
 }
 
-const UserList = ({ onAddUser, handleOnChange, users, onClick }: Props) => {
+const UserList = ({ onAddUser, handleOnChange, users, onClick}: Props) => {
   const userItems = users.map((user: User) =>
     <UserField
       user={user}

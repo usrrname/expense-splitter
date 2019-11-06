@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
 import './index.css';
-import { Item, User } from './types/types';
+import { Item, User, IState } from './types/types';
 import { connect } from "react-redux";
-import { addItem, deleteItem } from './store/reducers/ItemListReducer';
+import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
 import { addUser, deleteUser } from './store/reducers/UserListReducer';
-//import UserList from './components /UserList';
 import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseItem from './components /ExpenseItem';
-import cloneDeep from 'lodash/cloneDeep';
 
 type State = {
   items: Item[],
   users: User[],
+  isFocused: boolean,
+  inputValue?: any,
 }
 
 type DispatchProps = {
   addItem: () => void,
   addUser: () => void,
+  getTotal: () => void,
   deleteItem: (id: string) => void,
   deleteUser: (id: string) => void,
 }
@@ -29,33 +30,49 @@ class App extends Component<Props>{
 
   state: State = {
     items: [],
-    users: []
+    users: [],
+    isFocused: false,
+    inputValue: '',
   }
-
 
   handleOnChange = (event: any) => {
-    const { parentNode, value, name } = event.currentTarget;
-    const items = cloneDeep(this.props.items)
+    const { parentNode, value, name } = event.target;
+    if (event && value != null && value.length >= 0) {
+      this.setState({
+        inputValue: value,
+        isFocused: true
+      })
+    }
 
-    this.setState((prevState, props) => {
+    this.setState((prevState: State, props: Props) => {
       return {
-        items:
-          props.items.map(item => {
-            if (parentNode.id === item.id) {
-              return name === 'name' ? {
+        items: props.items.map(item => {
+          if (parentNode.id === item.id) {
+
+            if (name == 'name') {
+              item.name = value;
+              return {
                 ...item,
-                name: String(value)
-              } :
-                {
-                  ...item,
-                  cost: Number(value)
-                };
-            };
-          })
+                name: prevState.inputValue
+              }
+            }
+            if (name == 'cost') {
+              item.cost = value;
+              return {
+                ...item,
+                cost: Number(prevState.inputValue)
+              }
+            }
+          }
+        }
+        )
       }
     })
-  }
 
+    this.setState({
+      isFocused: false
+    })
+  }
 
   onAddItem = () => {
     this.props.addItem();
@@ -66,7 +83,7 @@ class App extends Component<Props>{
   onDeleteUser = (event: any): void => {
     event.preventDefault();
     const id = String(event.target.parentNode.getAttribute('id'));
-    this.props.deleteUser(id)
+    this.props.deleteUser(id);
   }
 
   onDeleteItem = (event: any): void => {
@@ -88,6 +105,7 @@ class App extends Component<Props>{
       />
     ));
     return (
+
       <div className="App d-flex justify-content-start">
         <h2>Income-based expense splitting</h2>
 
@@ -99,6 +117,7 @@ class App extends Component<Props>{
               + Add Item
               </button>
           </ul>
+          {!this.state.isFocused && <span>Total: {this.props.getTotal} </span>}
 
           <UserList
             users={users}
@@ -117,6 +136,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     items: state.ItemList.items,
     users: state.UserList.users,
+    isFocused: state.ItemList.isFocused
   }
 }
 
@@ -126,6 +146,7 @@ export default connect(
     addItem,
     addUser,
     deleteItem,
-    deleteUser
+    deleteUser,
+    getTotal
   }
 )(App);

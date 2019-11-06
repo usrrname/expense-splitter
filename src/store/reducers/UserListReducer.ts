@@ -17,7 +17,7 @@ const initialState: UState = {
     income: 0,
     paymentAmount: 0,
   }],
-  headCount: 2,
+  userCount: 2
 };
 
 export enum UserActions {

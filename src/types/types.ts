@@ -4,18 +4,19 @@ export type Action = AnyAction;
 
 // action types
 export interface Item {
-	id: string
-	name: string
+	id: string,
+	name: string,
 	cost: number
 }
 //initial State
 export interface IState {
 	itemCount: number,
 	items: Item[],
+	isFocused: boolean,
 }
 
 export interface UState {
-	headCount: number,
+	userCount: number,
 	users: User[],
 }
 
