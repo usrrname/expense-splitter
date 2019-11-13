@@ -37,7 +37,7 @@ export interface UserState {
 	type?: Collection,
 	users: User[],
 	count: number,
-	total: User['paymentAmount'],
+	total: number,
 }
 
 export namespace StoreState {

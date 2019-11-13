@@ -3,20 +3,15 @@ import { Result } from "../actions/types"
 import cloneDeep from 'lodash/cloneDeep';
 import { UserState, Action, User } from "../../types/types";
 import { Reducer } from "redux";
+import { createUser } from "../../utils/helper";
 
+const dummyUser1 = createUser();
+const dummyUser2 = createUser();
 const initialState: UserState = {
-  users: [{
-    id: v4(),
-    name: '',
-    income: 0,
-    paymentAmount: 0,
-  },
-  {
-    id: v4(),
-    name: '',
-    income: 0,
-    paymentAmount: 0,
-  }],
+  users: [
+    dummyUser1,
+    dummyUser2
+  ],
   count: 2,
   total: 0
 };
@@ -44,15 +39,15 @@ export type UserListActions = ReturnType<typeof ADD_USER> | ReturnType<typeof DE
 
 const UserReducer: Reducer<UserState, Action> = (state = initialState, action: UserListActions) => {
   switch (action.type) {
-    case ADD_USER:
+    case `${UserActions.ADD_USER}`:
       return {
         ...state,
         users: [...state.users, action.payload]
       }
-    case DELETE_USER:
+    case `${UserActions.DELETE_USER}`:
       return {
         ...state,
-        users: [action.payload]
+        users: [state.users.find(user => user.id !== action.id)]
       }
     default:
       return state
@@ -62,16 +57,11 @@ export default UserReducer;
 
 export const addUser = (): Result<void> => {
 
-  const newUser: User = {
-    id: v4(),
-    name: '',
-    income: 0,
-    paymentAmount: 0,
-  }
+  const newUser: User = createUser()
 
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users = users.concat(newUser)
+    users.concat(newUser)
     dispatch({ type: UserActions.ADD_USER, payload: newUser })
   }
 }
@@ -79,8 +69,9 @@ export const addUser = (): Result<void> => {
 export const deleteUser = (id: string): Result<void> => {
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    const remainingUsers = users.filter( (user: User) => user.id !== id)
+    const remainingUsers = users.filter((user: User) => user.id !== id)
     remainingUsers.flat(1);
     dispatch({ type: UserActions.DELETE_USER, payload: id })
   }
 }
+
