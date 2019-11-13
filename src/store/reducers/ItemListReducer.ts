@@ -1,19 +1,16 @@
-import { IState, Item, Action } from '../../types/types';
-import { v4 } from 'uuid';
+import { ItemState, Item, Action } from '../../types/types';
 import { Result } from '../actions/types';
 import { Reducer } from 'redux';
 import cloneDeep from 'lodash/cloneDeep';
+import { createItem } from '../../utils/helper';
 
-const initialState: IState = {
-	itemCount: 1,
+
+const initialState: ItemState = {
 	items: [
-		{
-			id: v4(),
-			name: '',
-			cost: 0,
-		}
+		createItem()
 	],
-	isFocused: false
+	count: 1,
+	total: 0
 };
 
 //actions
@@ -21,7 +18,6 @@ export enum ItemActions {
 	ADD_ITEM = 'ADD_ITEM',
 	DELETE_ITEM = 'DELETE_ITEM',
 	GET_TOTAL = 'GET_TOTAL',
-	INPUT_FOCUS = 'INPUT_FOCUS'
 }
 
 export const ADD_ITEM = (item: Item): Action => {
@@ -44,16 +40,10 @@ export const GET_TOTAL = (): Action => {
 	}
 }
 
-export const INPUT_FOCUS = (): Action => {
-	return {
-		type: "INPUT_FOCUS",
-	}
-}
-
-type ListActions = ReturnType<typeof ADD_ITEM> | ReturnType<typeof DELETE_ITEM>;
+type ListActions = ReturnType<typeof ADD_ITEM> | ReturnType<typeof DELETE_ITEM> | ReturnType<typeof GET_TOTAL>;
 
 //reducer
-export const ItemListReducer: Reducer<IState, Action> = (
+export const ItemListReducer: Reducer<ItemState, Action> = (
 	state = initialState,
 	action: ListActions
 ) => {
@@ -68,14 +58,14 @@ export const ItemListReducer: Reducer<IState, Action> = (
 			return {
 				...state,
 				items: [
-					state.items.find((item) =>
+					state.items.find(item =>
 						item.id !== action.payload)
 				]
 			};
-		case ItemActions.INPUT_FOCUS:
+		case ItemActions.GET_TOTAL:
 			return {
 				...state,
-				isFocused: action.payload
+				total: action.payload
 			}
 		default:
 			return state;
@@ -85,15 +75,11 @@ export const ItemListReducer: Reducer<IState, Action> = (
 // Action Creators
 
 export const addItem = (): Result<void> => {
-	let item: Item = {
-		id: v4(),
-		name: '',
-		cost: 0,
-	};
+	const newItem = createItem();
 	return (dispatch, getState) => {
 		let items = cloneDeep(getState().ItemList.items);
-		items = items.concat(item)
-		dispatch({ type: ItemActions.ADD_ITEM, payload: item });
+		items.concat(newItem)
+		dispatch({ type: ItemActions.ADD_ITEM, payload: newItem });
 	};
 }
 
@@ -103,20 +89,23 @@ export const deleteItem = (id: string): Result<void> => {
 		let removedItemArr = items.filter((item: Item) =>
 			item.id !== id
 		);
-		items = removedItemArr.flat(1)
+		removedItemArr.flat(1)
 		dispatch({ type: ItemActions.DELETE_ITEM, payload: id });
 	};
 };
 
 //calculate total
 export const getTotal = (): Result<void> => {
-	return (dispatch, getState) => {
-		const items = cloneDeep(getState().ItemList.items)
 
-		const total = items.reduce((total: number, item: Item) => {
-			return total += item.cost
+	return (dispatch, getState) => {
+		const { items, total } = cloneDeep(getState().ItemList)
+
+		const differentVar = items.reduce((total: number, item: Item) => {
+			return total += Number(item.cost)
 		}, 0)
 
-		dispatch({ type: "GET_TOTAL", total })
+		dispatch({ type: "GET_TOTAL", payload: differentVar })
 	}
 }
+
+

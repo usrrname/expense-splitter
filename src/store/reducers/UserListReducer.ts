@@ -1,10 +1,10 @@
 import { v4 } from "uuid"
 import { Result } from "../actions/types"
 import cloneDeep from 'lodash/cloneDeep';
-import { UState, Action, User } from "../../types/types";
+import { UserState, Action, User } from "../../types/types";
 import { Reducer } from "redux";
 
-const initialState: UState = {
+const initialState: UserState = {
   users: [{
     id: v4(),
     name: '',
@@ -17,7 +17,8 @@ const initialState: UState = {
     income: 0,
     paymentAmount: 0,
   }],
-  userCount: 2
+  count: 2,
+  total: 0
 };
 
 export enum UserActions {
@@ -41,7 +42,7 @@ export const DELETE_USER = (user: User): Action => {
 
 export type UserListActions = ReturnType<typeof ADD_USER> | ReturnType<typeof DELETE_USER>;
 
-const UserReducer: Reducer<UState, Action> = (state = initialState, action: UserListActions) => {
+const UserReducer: Reducer<UserState, Action> = (state = initialState, action: UserListActions) => {
   switch (action.type) {
     case ADD_USER:
       return {
@@ -51,7 +52,7 @@ const UserReducer: Reducer<UState, Action> = (state = initialState, action: User
     case DELETE_USER:
       return {
         ...state,
-        users: [state.users.filter(user => user.id !== action.payload)]
+        users: [action.payload]
       }
     default:
       return state
@@ -74,10 +75,12 @@ export const addUser = (): Result<void> => {
     dispatch({ type: UserActions.ADD_USER, payload: newUser })
   }
 }
+
 export const deleteUser = (id: string): Result<void> => {
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
-    users = users.filter(user => user.id !== id)
+    const remainingUsers = users.filter( (user: User) => user.id !== id)
+    remainingUsers.flat(1);
     dispatch({ type: UserActions.DELETE_USER, payload: id })
   }
 }
