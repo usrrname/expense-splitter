@@ -12,7 +12,7 @@ const render = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <App isFocused />
     </Provider>,
     rootElement)
 }

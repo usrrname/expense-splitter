@@ -11,13 +11,14 @@ type Props = {
   handleOnChange: (data: any) => void
 }
 
-const UserItem = ({ value, onClick, user, id, handleOnChange }: Props) => {
+const UserItem = ({ value, onClick, user, handleOnChange }: Props) => {
 
   return (
-    <li className='user-item' id={id}>
+    <fieldset className='user-item' id={user.id}>
       <label>Name</label>
-      <Input type="text"
-        name="user-name"
+      <Input
+        type="text"
+        name="name"
         placeholder="Enter Your Name"
         value={value}
         handleOnChange={handleOnChange}
@@ -26,13 +27,14 @@ const UserItem = ({ value, onClick, user, id, handleOnChange }: Props) => {
       <label>Income</label >
       <Input
         type="number"
-        placeholder="0"
+        name="income"
+        placeholder="Enter your income"
         value={value}
         handleOnChange={handleOnChange}
       />
 
       <button onClick={onClick} type="button"> x </button>
-    </li>
+    </fieldset>
   )
 }
 

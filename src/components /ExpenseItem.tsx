@@ -16,7 +16,8 @@ const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
   return (
     <fieldset className='expense-item' id={item.id}>
       <label>Item</label>
-      <Input type="text"
+      <Input 
+        type="text"
         name="name"
         className="item-name"
         placeholder="Name of expense"
