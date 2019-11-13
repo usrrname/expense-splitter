@@ -2,33 +2,47 @@ import { AnyAction } from "redux";
 
 export type Action = AnyAction;
 
-// action types
+export interface User {
+	id: string,
+	name: string,
+	income: number,
+	paymentAmount?: number,
+	incomeRatio?: number
+}
+
 export interface Item {
 	id: string,
 	name: string,
 	cost: number
 }
-//initial State
-export interface IState {
-	itemCount: number,
-	items: Item[],
-	isFocused: boolean,
+
+export type Collection = {
+	units?: Array<Object>,
+	count: number,
+	total: number,
+	types: {
+		expenses: ItemState,
+		users: UserState,
+	}
 }
 
-export interface UState {
-	userCount: number,
+export type ItemState = {
+	type?: Collection,
+	items: Item[],
+	count: number,
+	total: number,
+}
+
+export interface UserState {
+	type?: Collection,
 	users: User[],
+	count: number,
+	total: User['paymentAmount'],
 }
 
 export namespace StoreState {
 	export type AppState = {
-		ItemList: IState,
-		UserList: UState
+		ItemList: ItemState,
+		UserList: UserState,
 	}
-}
-export interface User {
-	id: string,
-	name: string,
-	income: number,
-	paymentAmount: number,
 }
