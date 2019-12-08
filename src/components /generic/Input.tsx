@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, FocusEventHandler } from 'react';
+import React, { ChangeEvent } from 'react';
 
 type Props = {
   id?: string,

@@ -4,19 +4,19 @@ import UserItem from './UserItem';
 
 type Props = {
   users: User[],
-  addUser: () => void,
-  deleteUser: (id: string) => void,
+  onAddUser: () => void,
+  onDeleteUser: (event: any) => void,
   handleOnChange: (event: any) => void
 }
 
-const UserList = ({ addUser, deleteUser, handleOnChange, users }: Props) => {
+const UserList = ({ onAddUser, onDeleteUser, handleOnChange, users }: Props) => {
   const userItems = users.map((user: User) =>
     <UserItem
       user={user}
       key={user.id}
       id={user.id}
       handleOnChange={handleOnChange}
-      onClick={deleteUser}
+      onClick={onDeleteUser}
     />
   )
 
@@ -24,7 +24,7 @@ const UserList = ({ addUser, deleteUser, handleOnChange, users }: Props) => {
     return (
       <ul className="user-list">
         {userItems}
-        <button onClick={addUser} type="button">+ Add User</button>
+        <button onClick={onAddUser} type="button">+ Add User</button>
       </ul>
     )
   }

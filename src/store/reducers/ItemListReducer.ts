@@ -6,9 +6,7 @@ import { createItem } from '../../utils/helper';
 
 
 const initialState: ItemState = {
-	items: [
-		createItem()
-	],
+	items: [createItem()],
 	count: 1,
 	total: 0
 };
@@ -49,12 +47,12 @@ export const ItemListReducer: Reducer<ItemState, Action> = (
 ) => {
 	switch (action.type) {
 
-		case ItemActions.ADD_ITEM:
+		case `${ItemActions.ADD_ITEM}`:
 			return {
 				...state,
 				items: [...state.items, action.payload]
 			};
-		case ItemActions.DELETE_ITEM:
+		case `${ItemActions.DELETE_ITEM}`:
 			return {
 				...state,
 				items: [
@@ -62,7 +60,7 @@ export const ItemListReducer: Reducer<ItemState, Action> = (
 						item.id !== action.payload)
 				]
 			};
-		case ItemActions.GET_TOTAL:
+		case `${ItemActions.GET_TOTAL}`:
 			return {
 				...state,
 				total: action.payload
@@ -85,8 +83,8 @@ export const addItem = (): Result<void> => {
 
 export const deleteItem = (id: string): Result<void> => {
 	return (dispatch, getState) => {
-		let items = cloneDeep(getState().ItemList.items);
-		let removedItemArr = items.filter((item: Item) =>
+		const items = cloneDeep(getState().ItemList.items);
+		const removedItemArr = items.filter((item: Item) =>
 			item.id !== id
 		);
 		removedItemArr.flat(1)
@@ -98,7 +96,7 @@ export const deleteItem = (id: string): Result<void> => {
 export const getTotal = (): Result<void> => {
 
 	return (dispatch, getState) => {
-		const { items, total } = cloneDeep(getState().ItemList)
+		let { items } = cloneDeep(getState().ItemList)
 
 		const differentVar = items.reduce((total: number, item: Item) => {
 			return total += Number(item.cost)
@@ -107,5 +105,4 @@ export const getTotal = (): Result<void> => {
 		dispatch({ type: "GET_TOTAL", payload: differentVar })
 	}
 }
-
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import Input from './generic/Input';
 import { Item } from '../types/types';
 

@@ -8,8 +8,6 @@ const rootElement = document.getElementById('root');
 
 const render = () => {
 
-  const state = store.getState();
-
   ReactDOM.render(
     <Provider store={store}>
       <App isFocused />
