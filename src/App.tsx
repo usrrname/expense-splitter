@@ -9,7 +9,7 @@ import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseList from './components /ExpenseList';
 import Total from './components /Total';
-import SortByIncome from './components /SortByIncome';
+import SortByIncome from './components /SplitByIncome';
 
 type State = {
   itemState: ItemState,
