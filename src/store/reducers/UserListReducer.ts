@@ -1,9 +1,8 @@
-import { v4 } from "uuid"
 import { Result } from "../actions/types"
 import cloneDeep from 'lodash/cloneDeep';
 import { UserState, Action, User } from "../../types/types";
 import { Reducer } from "redux";
-import { createUser } from "../../utils/helper";
+import { createUser, compareValues } from "../../utils/helper";
 
 const dummyUser1 = createUser();
 const dummyUser2 = createUser();
@@ -18,7 +17,8 @@ const initialState: UserState = {
 
 export enum UserActions {
   ADD_USER = "ADD_USER",
-  DELETE_USER = "DELETE_USER"
+  DELETE_USER = "DELETE_USER",
+  SORT_INCOME = "SORT_INCOME"
 }
 
 export const ADD_USER = (user: User): Action => {
@@ -35,7 +35,13 @@ export const DELETE_USER = (user: User): Action => {
   }
 }
 
-export type UserListActions = ReturnType<typeof ADD_USER> | ReturnType<typeof DELETE_USER>;
+export const SORT_INCOME = (): Action => {
+  return {
+    type: UserActions.SORT_INCOME
+  }
+}
+
+export type UserListActions = ReturnType<typeof ADD_USER> | ReturnType<typeof DELETE_USER> | ReturnType<typeof SORT_INCOME>;
 
 const UserReducer: Reducer<UserState, Action> = (state = initialState, action: UserListActions) => {
   switch (action.type) {
@@ -48,6 +54,14 @@ const UserReducer: Reducer<UserState, Action> = (state = initialState, action: U
       return {
         ...state,
         users: [state.users.find(user => user.id !== action.id)]
+      }
+    case `${UserActions.SORT_INCOME}`:
+      return {
+        ...state,
+        total: state.users.reduce((total: number, user: User) => {
+          return total += Number(user.income)
+        }, 0),
+        users: action.payload
       }
     default:
       return state
@@ -75,3 +89,25 @@ export const deleteUser = (id: string): Result<void> => {
   }
 }
 
+export const sortIncome = (): Result<void> => {
+  return (dispatch, getState) => {
+    let userList: UserState = cloneDeep(getState().UserList);
+    let { users, total } = userList;
+
+    // find total user income
+    const totalIncome = users.reduce((total: number, user: User) => {
+      return total += Number(user.income)
+    }, 0);
+    total = totalIncome;
+
+    const calculateIncomeRatio = (users: User[], totalIncome: number) => {
+      users.forEach(user =>
+        user.incomeRatio = user.income / totalIncome
+      )
+    }
+    // find user income as a percentage of total
+    calculateIncomeRatio(users, totalIncome);
+
+    dispatch({ type: UserActions.SORT_INCOME, payload: users, total })
+  }
+}

@@ -4,11 +4,12 @@ import './index.css';
 import { User, ItemState, UserState } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
-import { addUser, deleteUser } from './store/reducers/UserListReducer';
+import { addUser, deleteUser, sortIncome } from './store/reducers/UserListReducer';
 import { AppState } from './store/store';
 import UserList from './components /UserList';
 import ExpenseList from './components /ExpenseList';
 import Total from './components /Total';
+import SortByIncome from './components /SortByIncome';
 
 type State = {
   itemState: ItemState,
@@ -23,6 +24,7 @@ type DispatchProps = {
   getTotal: () => void,
   deleteItem: (id: string) => void,
   deleteUser: (id: string) => void,
+  sortIncome: () => void
 }
 
 type Props = DispatchProps & State;
@@ -65,8 +67,7 @@ class App extends Component<Props>{
               }
             }
           }
-        }
-        )
+        })
       }
     })
   }
@@ -93,15 +94,14 @@ class App extends Component<Props>{
               }
             }
             if (name === 'income') {
-              user.income = value;
+              user.income = Number(value);
               return {
                 ...user,
-                income: Number(prevState.inputValue)
+                income: prevState.inputValue
               }
             }
           }
-        }
-        )
+        })
       }
     })
   }
@@ -111,7 +111,7 @@ class App extends Component<Props>{
   }
 
   onAddItem = () => {
-    this.props.addItem();
+    this.props.addItem()
   }
 
   onAddUser = () => this.props.addUser();
@@ -128,8 +128,12 @@ class App extends Component<Props>{
     this.props.deleteItem(id)
   }
 
+  onSortIncome = (event: any): void => {
+    this.props.sortIncome();
+  }
+
   public render() {
-    const { items } = this.props.itemState;
+    const { itemState } = this.props;
     const { users } = this.props.userState;
 
     return (
@@ -141,22 +145,29 @@ class App extends Component<Props>{
           <h4>Annual income</h4>
 
           <ExpenseList
-            items={items}
+            items={itemState.items}
             addItem={this.onAddItem}
             deleteItem={this.onDeleteItem}
             handleOnChange={this.handleItemChange}
           />
+
           <label>Total: </label>
           <Total
-            itemState={this.props.itemState}
+            itemState={itemState}
             onClick={this.onGetTotal}
           />
 
           <UserList
             users={users}
-            addUser={this.onAddUser}
-            deleteUser={this.onDeleteUser}
+            onAddUser={this.onAddUser}
+            onDeleteUser={this.onDeleteUser}
             handleOnChange={this.handleUserChange}
+          />
+
+          <SortByIncome
+            users={users}
+            value="Sort Income"
+            onClick={this.onSortIncome}
           />
         </div>
       </div>
@@ -178,6 +189,7 @@ export default connect(
     addUser,
     deleteItem,
     deleteUser,
-    getTotal
+    getTotal,
+    sortIncome
   }
 )(App);
