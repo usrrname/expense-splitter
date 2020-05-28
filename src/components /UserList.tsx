@@ -27,7 +27,7 @@ const UserList = ({ onAddUser, onDeleteUser, handleOnChange, users }: Props) => 
     return (
       <ul className="user-list">
         {userItems}
-        <Button type="button" onClick={onAddUser} value="+ Add User" />
+        <Button type="button" onClick={onAddUser} variant="outline-primary">+ Add User</Button>
       </ul>
     )
   }

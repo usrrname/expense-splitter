@@ -139,11 +139,9 @@ class App extends Component<Props>{
     return (
 
       <div className="App d-flex justify-content-start">
-        <h2>Income-based expense splitting</h2>
+        <h2>Income-based expense splitter</h2>
 
         <div className="flex-row">
-          <h4>Annual income</h4>
-
           <ExpenseList
             items={itemState.items}
             addItem={this.onAddItem}
@@ -166,7 +164,6 @@ class App extends Component<Props>{
 
           <SortByIncome
             users={users}
-            value="Sort Income"
             onClick={this.onSortIncome}
           />
         </div>

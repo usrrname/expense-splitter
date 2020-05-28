@@ -4,11 +4,10 @@ import Button from 'react-bootstrap/Button';
 
 type Props = {
   users: User[],
-  value: string,
   onClick: (event: any) => void
 };
 
-const SplitByIncome = ({ users, value, onClick }: Props) => {
+const SplitByIncome = ({ users, onClick }: Props) => {
   const paymentList = users.map(user =>
     <p>{user.name} pays {user.paymentAmount} </p>);
 
@@ -17,8 +16,7 @@ const SplitByIncome = ({ users, value, onClick }: Props) => {
       {paymentList}
       <Button
         variant="primary"
-        onClick={onClick}
-        value={value}>+ Add User</Button>
+        onClick={onClick}>Split The Bill</Button>
     </div>
   )
 

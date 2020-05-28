@@ -110,7 +110,6 @@ export const sortIncome = (): Result<void> => {
     }
     // find user income as a percentage of total
     calculateIncomeRatio(users, totalIncome);
-
     dispatch({ type: UserActions.SORT_INCOME, payload: users, total })
   }
 
