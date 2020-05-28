@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from '../types/types';
-import Button from './generic/Button';
+import Button from 'react-bootstrap/Button';
 
 type Props = {
   users: User[],
@@ -9,15 +9,19 @@ type Props = {
 };
 
 const SplitByIncome = ({ users, value, onClick }: Props) => {
-  const payments = users.map(user =>
+  const paymentList = users.map(user =>
     <p>{user.name} pays {user.paymentAmount} </p>);
 
   return (
-    <Button
-      className="btn"
-      onClick={onClick}
-      value={value} />
+    <div>
+      {paymentList}
+      <Button
+        variant="primary"
+        onClick={onClick}
+        value={value}>+ Add User</Button>
+    </div>
   )
+
 }
 
 export default SplitByIncome;

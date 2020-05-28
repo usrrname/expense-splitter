@@ -11,7 +11,7 @@ const Total = ({ itemState, onClick }: Props) => {
   return (
     <>
       <span>{itemState.total}</span>
-      <button onClick={onClick}> Get Total</button>
+      <button onClick={onClick}>Total</button>
     </>
   )
 }

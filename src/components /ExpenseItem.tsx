@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import Input from './generic/Input';
 import { Item } from '../types/types';
+import Button from 'react-bootstrap/Button';
 
 type Props = {
   item: Item,
@@ -16,7 +17,7 @@ const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
   return (
     <fieldset className='expense-item' id={item.id}>
       <label>Item</label>
-      <Input 
+      <Input
         type="text"
         name="name"
         className="item-name"
@@ -34,7 +35,7 @@ const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
         value={value}
         handleOnChange={handleOnChange}
       />
-      <button onClick={onClick} type="button"> x </button>
+      <Button onClick={onClick} variant="secondary"> x </Button>
     </fieldset>
   )
 }

@@ -50,7 +50,7 @@ class App extends Component<Props>{
 
     this.setState((prevState: State, props: Props) => {
       return {
-        items: props.itemState.items.map(item => {
+        items: props.itemState.items.forEach(item => {
           if (parentNode.id === item.id) {
             if (name === 'name') {
               item.name = value;
@@ -84,7 +84,7 @@ class App extends Component<Props>{
 
     this.setState((prevState: State, props: Props) => {
       return {
-        users: props.userState.users.map((user: User) => {
+        users: props.userState.users.forEach((user: User) => {
           if (parentNode.id === user.id) {
             if (name === 'name') {
               user.name = value;

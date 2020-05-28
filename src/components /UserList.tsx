@@ -1,6 +1,7 @@
 import React from 'react';
 import { User } from '../types/types';
 import UserItem from './UserItem';
+import Button from 'react-bootstrap/Button';
 
 type Props = {
   users: User[],
@@ -11,20 +12,22 @@ type Props = {
 
 const UserList = ({ onAddUser, onDeleteUser, handleOnChange, users }: Props) => {
   const userItems = users.map((user: User) =>
-    <UserItem
-      user={user}
-      key={user.id}
-      id={user.id}
-      handleOnChange={handleOnChange}
-      onClick={onDeleteUser}
-    />
+    <div>
+      <UserItem
+        user={user}
+        key={user.id}
+        id={user.id}
+        handleOnChange={handleOnChange}
+        onDeleteUser={onDeleteUser}
+      />
+    </div>
   )
 
   const renderUsers = () => {
     return (
       <ul className="user-list">
         {userItems}
-        <button onClick={onAddUser} type="button">+ Add User</button>
+        <Button type="button" onClick={onAddUser} value="+ Add User" />
       </ul>
     )
   }

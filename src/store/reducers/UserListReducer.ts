@@ -2,14 +2,14 @@ import { Result } from "../actions/types"
 import cloneDeep from 'lodash/cloneDeep';
 import { UserState, Action, User } from "../../types/types";
 import { Reducer } from "redux";
-import { createUser, compareValues } from "../../utils/helper";
+import { createUser } from "../../utils/helper";
 
-const dummyUser1 = createUser();
-const dummyUser2 = createUser();
+const user1 = createUser();
+const user2 = createUser();
 const initialState: UserState = {
   users: [
-    dummyUser1,
-    dummyUser2
+    user1,
+    user2
   ],
   count: 2,
   total: 0
@@ -37,7 +37,8 @@ export const DELETE_USER = (user: User): Action => {
 
 export const SORT_INCOME = (): Action => {
   return {
-    type: UserActions.SORT_INCOME
+    type: UserActions.SORT_INCOME,
+    payload: initialState.total
   }
 }
 
@@ -48,12 +49,14 @@ const UserReducer: Reducer<UserState, Action> = (state = initialState, action: U
     case `${UserActions.ADD_USER}`:
       return {
         ...state,
-        users: [...state.users, action.payload]
+        users: [...state.users, action.payload],
+        count: state.count + 1
       }
     case `${UserActions.DELETE_USER}`:
       return {
         ...state,
-        users: [state.users.find(user => user.id !== action.id)]
+        users: [...state.users.filter(user => user.id !== action.id)],
+        count: state.count - 1
       }
     case `${UserActions.SORT_INCOME}`:
       return {
@@ -72,7 +75,6 @@ export default UserReducer;
 export const addUser = (): Result<void> => {
 
   const newUser: User = createUser()
-
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
     users.concat(newUser)
@@ -81,11 +83,12 @@ export const addUser = (): Result<void> => {
 }
 
 export const deleteUser = (id: string): Result<void> => {
+  console.log(id);
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
     const remainingUsers = users.filter((user: User) => user.id !== id)
-    remainingUsers.flat(1);
-    dispatch({ type: UserActions.DELETE_USER, payload: id })
+    remainingUsers.flat();
+    dispatch({ type: UserActions.DELETE_USER, payload: remainingUsers, id })
   }
 }
 
@@ -102,7 +105,7 @@ export const sortIncome = (): Result<void> => {
 
     const calculateIncomeRatio = (users: User[], totalIncome: number) => {
       users.forEach(user =>
-        user.incomeRatio = user.income / totalIncome
+        user.incomeRatio = (user.income / totalIncome)
       )
     }
     // find user income as a percentage of total
@@ -110,4 +113,6 @@ export const sortIncome = (): Result<void> => {
 
     dispatch({ type: UserActions.SORT_INCOME, payload: users, total })
   }
+
+
 }

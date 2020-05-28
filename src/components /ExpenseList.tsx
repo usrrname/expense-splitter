@@ -1,6 +1,7 @@
 import React from 'react';
 import { Item } from '../types/types';
 import ExpenseItem from './ExpenseItem';
+import Button from 'react-bootstrap/Button';
 
 type Props = {
   items: Item[],
@@ -22,9 +23,7 @@ const ExpenseList = ({ items, addItem, deleteItem, handleOnChange }: Props) => {
   ));
   return (<ul className='expense-list'>
     {listItems}
-    <button onClick={addItem} type="button">
-      + Add Item
-    </button>
+    <Button onClick={addItem}>+ Add Item</Button>
   </ul>
   )
 }

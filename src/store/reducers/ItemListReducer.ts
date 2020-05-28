@@ -50,15 +50,14 @@ export const ItemListReducer: Reducer<ItemState, Action> = (
 		case `${ItemActions.ADD_ITEM}`:
 			return {
 				...state,
-				items: [...state.items, action.payload]
+				items: [...state.items, action.payload],
+				count: state.count + 1
 			};
 		case `${ItemActions.DELETE_ITEM}`:
 			return {
 				...state,
-				items: [
-					state.items.find(item =>
-						item.id !== action.payload)
-				]
+				items: [...state.items.filter(item => item.id !== action.id)],
+				count: state.count - 1
 			};
 		case `${ItemActions.GET_TOTAL}`:
 			return {
@@ -75,8 +74,8 @@ export const ItemListReducer: Reducer<ItemState, Action> = (
 export const addItem = (): Result<void> => {
 	const newItem = createItem();
 	return (dispatch, getState) => {
-		let items = cloneDeep(getState().ItemList.items);
-		items.concat(newItem)
+		const items = cloneDeep(getState().ItemList.items);
+		items.concat(newItem);
 		dispatch({ type: ItemActions.ADD_ITEM, payload: newItem });
 	};
 }
@@ -84,11 +83,11 @@ export const addItem = (): Result<void> => {
 export const deleteItem = (id: string): Result<void> => {
 	return (dispatch, getState) => {
 		const items = cloneDeep(getState().ItemList.items);
-		const removedItemArr = items.filter((item: Item) =>
+		const itemsArray = items.filter((item: Item) =>
 			item.id !== id
 		);
-		removedItemArr.flat(1)
-		dispatch({ type: ItemActions.DELETE_ITEM, payload: id });
+		itemsArray.flat()
+		dispatch({ type: ItemActions.DELETE_ITEM, payload: itemsArray, id });
 	};
 };
 
