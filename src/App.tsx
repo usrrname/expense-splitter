@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import './index.css';
-import { User, ItemState, UserState } from './types/types';
+import { User, ItemState, UserState, Item } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
 import { addUser, deleteUser, sortIncome } from './store/reducers/UserListReducer';
@@ -31,13 +31,6 @@ type Props = DispatchProps & State;
 
 class App extends Component<Props>{
 
-  state: State = {
-    itemState: this.props.itemState,
-    userState: this.props.userState,
-    isFocused: false,
-    inputValue: '',
-  }
-
   handleItemChange = (event: any) => {
     const { parentNode, value, name } = event.target;
 
@@ -50,7 +43,7 @@ class App extends Component<Props>{
 
     this.setState((prevState: State, props: Props) => {
       return {
-        items: props.itemState.items.forEach(item => {
+        items: props.itemState.items.map((item: Item) => {
           if (parentNode.id === item.id) {
             if (name === 'name') {
               item.name = value;
@@ -84,7 +77,8 @@ class App extends Component<Props>{
 
     this.setState((prevState: State, props: Props) => {
       return {
-        users: props.userState.users.forEach((user: User) => {
+        users: props.userState.users.map((user: User) => {
+
           if (parentNode.id === user.id) {
             if (name === 'name') {
               user.name = value;

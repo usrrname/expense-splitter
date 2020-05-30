@@ -83,7 +83,6 @@ export const addUser = (): Result<void> => {
 }
 
 export const deleteUser = (id: string): Result<void> => {
-  console.log(id);
   return (dispatch, getState) => {
     let users: User[] = cloneDeep(getState().UserList.users)
     const remainingUsers = users.filter((user: User) => user.id !== id)

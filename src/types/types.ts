@@ -43,6 +43,6 @@ export interface UserState {
 export namespace StoreState {
 	export type AppState = {
 		ItemList: ItemState,
-		UserList: UserState,
+		UserList: UserState
 	}
 }
