@@ -31,15 +31,15 @@ type Props = DispatchProps & State;
 
 class App extends Component<Props>{
 
+  handleFocus = (event: any) => {
+    const { value } = event.target;
+    if (event && value != null && value.length >= 0) {
+      this.setState({ inputValue: value, isFocused: true })
+    }
+  }
+
   handleItemChange = (event: any) => {
     const { parentNode, value, name } = event.target;
-
-    if (event && value != null && value.length >= 0) {
-      this.setState({
-        inputValue: value,
-        isFocused: true
-      })
-    }
 
     this.setState((prevState: State, props: Props) => {
       return {
@@ -51,8 +51,7 @@ class App extends Component<Props>{
                 ...item,
                 name: prevState.inputValue
               }
-            }
-            if (name === 'cost') {
+            } else if (name === 'cost') {
               item.cost = value;
               return {
                 ...item,
@@ -68,13 +67,6 @@ class App extends Component<Props>{
   handleUserChange = (event: any) => {
     const { parentNode, value, name } = event.target;
 
-    if (event && value != null && value.length >= 0) {
-      this.setState({
-        inputValue: value,
-        isFocused: true
-      })
-    }
-
     this.setState((prevState: State, props: Props) => {
       return {
         users: props.userState.users.map((user: User) => {
@@ -86,8 +78,7 @@ class App extends Component<Props>{
                 ...user,
                 name: prevState.inputValue
               }
-            }
-            if (name === 'income') {
+            } else if (name === 'income') {
               user.income = Number(value);
               return {
                 ...user,
@@ -100,13 +91,9 @@ class App extends Component<Props>{
     })
   }
 
-  onGetTotal = () => {
-    this.props.getTotal();
-  }
+  onGetTotal = () => this.props.getTotal();
 
-  onAddItem = () => {
-    this.props.addItem()
-  }
+  onAddItem = () => this.props.addItem();
 
   onAddUser = () => this.props.addUser();
 
@@ -133,7 +120,7 @@ class App extends Component<Props>{
     return (
 
       <div className="App d-flex justify-content-start">
-        <h2>Income-based expense splitter</h2>
+        <h2>Expense splitter</h2>
 
         <div className="flex-row">
           <ExpenseList
@@ -141,6 +128,7 @@ class App extends Component<Props>{
             addItem={this.onAddItem}
             deleteItem={this.onDeleteItem}
             handleOnChange={this.handleItemChange}
+            handleFocus={this.handleFocus}
           />
 
           <label>Total: </label>
@@ -154,6 +142,7 @@ class App extends Component<Props>{
             onAddUser={this.onAddUser}
             onDeleteUser={this.onDeleteUser}
             handleOnChange={this.handleUserChange}
+            handleFocus={this.handleFocus}
           />
 
           <SortByIncome

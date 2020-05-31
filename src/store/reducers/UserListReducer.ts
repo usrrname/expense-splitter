@@ -93,18 +93,20 @@ export const deleteUser = (id: string): Result<void> => {
 
 export const sortIncome = (): Result<void> => {
   return (dispatch, getState) => {
+    let itemTotal = cloneDeep(getState().ItemList.total);
     let userList: UserState = cloneDeep(getState().UserList);
     let { users, total } = userList;
 
     // find total user income
     const totalIncome = users.reduce((total: number, user: User) => {
-      return total += Number(user.income)
+      return total += +user.income;
     }, 0);
-    total = totalIncome;
 
     const calculateIncomeRatio = (users: User[], totalIncome: number) => {
-      users.forEach(user =>
-        user.incomeRatio = (user.income / totalIncome)
+      users.forEach(user => {
+        user.incomeRatio = user.income / totalIncome;
+        user.paymentAmount = +(user.incomeRatio * itemTotal).toFixed(2);
+      }
       )
     }
     // find user income as a percentage of total

@@ -7,16 +7,18 @@ type Props = {
   items: Item[],
   addItem: () => void,
   deleteItem: (id: string) => void,
-  handleOnChange: (event: any) => void
+  handleOnChange: (event: any) => void,
+  handleFocus: (event: any) => void
 }
 
-const ExpenseList = ({ items, addItem, deleteItem, handleOnChange }: Props) => {
+const ExpenseList = ({ items, addItem, deleteItem, handleOnChange, handleFocus }: Props) => {
 
   const listItems = items.map((item: Item) => (
     <ExpenseItem
       key={item.id}
       id={item.id}
       item={item}
+      handleFocus={handleFocus}
       handleOnChange={handleOnChange}
       onClick={deleteItem}
     />

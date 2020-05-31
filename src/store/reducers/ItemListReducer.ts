@@ -4,7 +4,6 @@ import { Reducer } from 'redux';
 import cloneDeep from 'lodash/cloneDeep';
 import { createItem } from '../../utils/helper';
 
-
 const initialState: ItemState = {
 	items: [createItem()],
 	count: 1,
@@ -35,6 +34,7 @@ export const DELETE_ITEM = (item: Item): Action => {
 export const GET_TOTAL = (): Action => {
 	return {
 		type: "GET_TOTAL",
+		payload: initialState.total
 	}
 }
 

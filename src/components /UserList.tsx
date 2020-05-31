@@ -8,20 +8,23 @@ type Props = {
   onAddUser: () => void,
   onDeleteUser: (event: any) => void,
   handleOnChange: (event: any) => void
+  handleFocus: (event: any) => void
 }
 
-const UserList = ({ onAddUser, onDeleteUser, handleOnChange, users }: Props) => {
-  const userItems = users.map((user: User) =>
-    <div>
-      <UserItem
-        user={user}
-        key={user.id}
-        id={user.id}
-        handleOnChange={handleOnChange}
-        onDeleteUser={onDeleteUser}
-      />
-    </div>
-  )
+const UserList = ({ onAddUser, onDeleteUser, handleOnChange, handleFocus, users }: Props) => {
+  const userItems = users.map((user: User) => {
+    return (
+      <div>
+        <UserItem
+          key={user.id}
+          user={user}
+          handleOnChange={handleOnChange}
+          handleFocus={handleFocus}
+          onDeleteUser={onDeleteUser}
+        />
+      </div>
+    )
+  })
 
   const renderUsers = () => {
     return (

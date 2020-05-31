@@ -9,10 +9,11 @@ type Props = {
   id: string,
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   onClick: (event: any) => void,
-  handleOnChange: (event: any) => void
+  handleOnChange: (event: any) => void,
+  handleFocus: (event: any) => void
 }
 
-const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
+const ExpenseItem = ({ value, item, handleFocus, onClick, handleOnChange }: Props) => {
 
   return (
     <fieldset className='expense-item' id={item.id}>
@@ -23,6 +24,7 @@ const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
         className="item-name"
         placeholder="Name of expense"
         value={value}
+        handleFocus={handleFocus}
         handleOnChange={handleOnChange}
       />
 
@@ -33,9 +35,10 @@ const ExpenseItem = ({ value, item, onClick, handleOnChange }: Props) => {
         className="item-cost"
         placeholder="Amount"
         value={value}
+        handleFocus={handleFocus}
         handleOnChange={handleOnChange}
       />
-      <Button onClick={onClick} variant="secondary"> x </Button>
+      <Button onClick={onClick} variant="secondary">x</Button>
     </fieldset>
   )
 }

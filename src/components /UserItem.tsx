@@ -6,13 +6,14 @@ import Button from 'react-bootstrap/Button';
 
 type Props = {
   value?: any,
-  id: string,
+  id?: string,
   user: User,
   onDeleteUser: (event: any) => void,
-  handleOnChange: (data: any) => void
+  handleOnChange: (event: any) => void,
+  handleFocus: (event: any) => void
 }
 
-const UserItem = ({ value, user, onDeleteUser, handleOnChange }: Props) => {
+const UserItem = ({ value, user, onDeleteUser, handleOnChange, handleFocus }: Props) => {
   return (
     <div>
       <fieldset className='user-item' id={user.id}>
@@ -22,6 +23,7 @@ const UserItem = ({ value, user, onDeleteUser, handleOnChange }: Props) => {
           name="name"
           placeholder="Enter Your Name"
           value={value}
+          handleFocus={handleFocus}
           handleOnChange={handleOnChange}
         />
 
@@ -31,6 +33,7 @@ const UserItem = ({ value, user, onDeleteUser, handleOnChange }: Props) => {
           name="income"
           placeholder="Enter your income"
           value={value}
+          handleFocus={handleFocus}
           handleOnChange={handleOnChange}
         />
         <Button onClick={onDeleteUser} variant="light">x </Button>

@@ -10,12 +10,14 @@ type Props = {
   onFocus?: (event: FocusEvent) => void,
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   handleOnChange: (event: any) => void,
+  handleFocus: (event: any) => void
 }
 
-const Input = ({ className, name, placeholder, value, type, handleOnChange }: Props) => {
+const Input = ({ className, name, placeholder, value, type, handleOnChange, handleFocus }: Props) => {
   return (
     <input
       onChange={handleOnChange}
+      onFocus={handleFocus}
       className={className}
       name={name}
       type={type}
