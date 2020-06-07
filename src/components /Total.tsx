@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { ItemState } from '../types/types';
 
 type Props = {
   itemState: ItemState,
-  onClick: (event: any) => void,
+  onBlur?: (event: FormEvent) => void,
 }
 
-const Total = ({ itemState, onClick }: Props) => {
+const Total = ({ itemState, onBlur }: Props) => {
 
   return (
-    <>
-      <span>{itemState.total}</span>
-      <button onClick={onClick}>Total</button>
+    <><label>Total: </label>
+      <span onBlur={onBlur}>{itemState.total}</span>
     </>
   )
 }

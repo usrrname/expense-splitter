@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 import { User, ItemState, UserState, Item } from './types/types';
 import { connect } from "react-redux";
 import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
@@ -10,6 +10,7 @@ import UserList from './components /UserList';
 import ExpenseList from './components /ExpenseList';
 import Total from './components /Total';
 import SortByIncome from './components /SplitByIncome';
+import { Container, Row, Col } from 'react-bootstrap';
 
 type State = {
   itemState: ItemState,
@@ -62,6 +63,7 @@ class App extends Component<Props>{
         })
       }
     })
+    this.onGetTotal();
   }
 
   handleUserChange = (event: any) => {
@@ -89,6 +91,7 @@ class App extends Component<Props>{
         })
       }
     })
+    this.onGetTotal();
   }
 
   onGetTotal = () => this.props.getTotal();
@@ -118,39 +121,40 @@ class App extends Component<Props>{
     const { users } = this.props.userState;
 
     return (
+      <Container fluid="md">
+        <Row>
+          <Col>
+            <h2>Expense splitter</h2>
+            <ExpenseList
+              items={itemState.items}
+              addItem={this.onAddItem}
+              deleteItem={this.onDeleteItem}
+              handleOnChange={this.handleItemChange}
+              handleFocus={this.handleFocus}
+            />
 
-      <div className="App d-flex justify-content-start">
-        <h2>Expense splitter</h2>
+            <Total
+              itemState={itemState}
+              onBlur={this.onGetTotal}
+            />
+          </Col>
+          <Col>
 
-        <div className="flex-row">
-          <ExpenseList
-            items={itemState.items}
-            addItem={this.onAddItem}
-            deleteItem={this.onDeleteItem}
-            handleOnChange={this.handleItemChange}
-            handleFocus={this.handleFocus}
-          />
+            <UserList
+              users={users}
+              onAddUser={this.onAddUser}
+              onDeleteUser={this.onDeleteUser}
+              handleOnChange={this.handleUserChange}
+              handleFocus={this.handleFocus}
+            />
 
-          <label>Total: </label>
-          <Total
-            itemState={itemState}
-            onClick={this.onGetTotal}
-          />
-
-          <UserList
-            users={users}
-            onAddUser={this.onAddUser}
-            onDeleteUser={this.onDeleteUser}
-            handleOnChange={this.handleUserChange}
-            handleFocus={this.handleFocus}
-          />
-
-          <SortByIncome
-            users={users}
-            onClick={this.onSortIncome}
-          />
-        </div>
-      </div>
+            <SortByIncome
+              users={users}
+              onClick={this.onSortIncome}
+            />
+          </Col>
+        </Row>
+      </Container>
     )
   }
 };

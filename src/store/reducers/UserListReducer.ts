@@ -11,7 +11,6 @@ const initialState: UserState = {
     user1,
     user2
   ],
-  count: 2,
   total: 0
 };
 
@@ -49,14 +48,12 @@ const UserReducer: Reducer<UserState, Action> = (state = initialState, action: U
     case `${UserActions.ADD_USER}`:
       return {
         ...state,
-        users: [...state.users, action.payload],
-        count: state.count + 1
+        users: [...state.users, action.payload]
       }
     case `${UserActions.DELETE_USER}`:
       return {
         ...state,
-        users: [...state.users.filter(user => user.id !== action.id)],
-        count: state.count - 1
+        users: [...state.users.filter(user => user.id !== action.id)]
       }
     case `${UserActions.SORT_INCOME}`:
       return {

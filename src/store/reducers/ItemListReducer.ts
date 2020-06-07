@@ -6,7 +6,6 @@ import { createItem } from '../../utils/helper';
 
 const initialState: ItemState = {
 	items: [createItem()],
-	count: 1,
 	total: 0
 };
 
@@ -51,14 +50,12 @@ export const ItemListReducer: Reducer<ItemState, Action> = (
 			return {
 				...state,
 				items: [...state.items, action.payload],
-				count: state.count + 1
 			};
 		case `${ItemActions.DELETE_ITEM}`:
 			return {
 				...state,
 				items: [...state.items.filter(item => item.id !== action.id)],
-				count: state.count - 1
-			};
+			}
 		case `${ItemActions.GET_TOTAL}`:
 			return {
 				...state,

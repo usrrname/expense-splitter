@@ -18,7 +18,6 @@ export interface Item {
 
 export type Collection = {
 	units?: Array<Object>,
-	count: number,
 	total: number,
 	types: {
 		expenses: ItemState,
@@ -29,14 +28,12 @@ export type Collection = {
 export type ItemState = {
 	type?: Collection,
 	items: Item[],
-	count: number,
 	total: number,
 }
 
 export interface UserState {
 	type?: Collection,
 	users: User[],
-	count: number,
 	total: number,
 }
 
