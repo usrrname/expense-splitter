@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import { User, ItemState, UserState, Item } from './types/types';
-import { connect } from "react-redux";
+
+import { Col, Container, Row } from 'react-bootstrap';
+import { Item, ItemState, User, UserState } from './types/types';
+import React, { Component } from 'react';
 import { addItem, deleteItem, getTotal } from './store/reducers/ItemListReducer';
 import { addUser, deleteUser, sortIncome } from './store/reducers/UserListReducer';
+
 import { AppState } from './store/store';
-import UserList from './components /UserList';
 import ExpenseList from './components /ExpenseList';
+import SplitByIncome from './components /SplitByIncome';
 import Total from './components /Total';
-import SortByIncome from './components /SplitByIncome';
-import { Container, Row, Col } from 'react-bootstrap';
+import UserList from './components /UserList';
+import { connect } from "react-redux";
 
 type State = {
   itemState: ItemState,
@@ -102,13 +104,13 @@ class App extends Component<Props>{
 
   onDeleteUser = (event: any): void => {
     event.preventDefault();
-    const id = String(event.target.parentNode.getAttribute('id'));
+    const id = String(event.target.parentNode.id);
     this.props.deleteUser(id);
   }
 
   onDeleteItem = (event: any): void => {
     event.preventDefault();
-    const id = String(event.target.parentNode.getAttribute('id'));
+    const id = String(event.target.parentNode.id);
     this.props.deleteItem(id)
   }
 
@@ -121,10 +123,24 @@ class App extends Component<Props>{
     const { users } = this.props.userState;
 
     return (
-      <Container fluid="md">
+      <Container fluid="xl" className="p-3 col-lg-12 col-md-12">
+        <h3 className="mv-3">Expense Splitter</h3>
         <Row>
-          <Col>
-            <h2>Expense splitter</h2>
+          <Col className="col-lg-6 col-sm-12">
+            <UserList
+              users={users}
+              onAddUser={this.onAddUser}
+              onDeleteUser={this.onDeleteUser}
+              handleOnChange={this.handleUserChange}
+              handleFocus={this.handleFocus}
+            />
+            <SplitByIncome
+              users={users}
+              onClick={this.onSortIncome}
+            />
+          </Col>
+        
+          <Col className="col-lg-6 col-sm-12">
             <ExpenseList
               items={itemState.items}
               addItem={this.onAddItem}
@@ -136,21 +152,6 @@ class App extends Component<Props>{
             <Total
               itemState={itemState}
               onBlur={this.onGetTotal}
-            />
-          </Col>
-          <Col>
-
-            <UserList
-              users={users}
-              onAddUser={this.onAddUser}
-              onDeleteUser={this.onDeleteUser}
-              handleOnChange={this.handleUserChange}
-              handleFocus={this.handleFocus}
-            />
-
-            <SortByIncome
-              users={users}
-              onClick={this.onSortIncome}
             />
           </Col>
         </Row>
