@@ -13,7 +13,7 @@
 		"bootstrap-icons": "^1.0.0",
 		"eslint-utils": "^1.4.2",
 		"history": "^4.9.0",
-		"lodash": "^4.17.20",
+		"lodash": "^4.17.21",
 		"node-sass": "^4.14.1",
 		"react": "^16.8.6",
 		"react-bootstrap": "^1.0.1",
